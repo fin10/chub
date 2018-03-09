@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [        
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Client",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+            "runtimeArgs": [
+                "--exec",
+                "${workspaceFolder}/node_modules/.bin/babel-node",
+                "${workspaceFolder}/server/main.js",
+                "--watch",
+                "${workspaceFolder}/server"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "restart": true,
+            "outputCapture": "std"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Server/Client",
+            "configurations": ["Server", "Client"]
+        }
+    ]
+}

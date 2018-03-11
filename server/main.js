@@ -3,14 +3,18 @@ import path from 'path'
 import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
 
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import config from '../webpack.dev.config.js'
 
-import index from './routes/index'
-import users from './routes/users'
+import passport from 'passport'
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
+import axios from 'axios'
+
+import Api from './routes/api'
 
 const app = express()
 
@@ -26,21 +30,42 @@ if (env == 'development') {
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: false
-}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(passport.initialize())
 
-app.use('/', index)
-app.use('/users', users)
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => { console.log('mongodb is connected.') });
+mongoose.connect('mongodb://' + process.env.MONGO_DB_HOST + '/chub')
 
-app.use(function (req, res, next) {
-  var err = new Error('Not Found')
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/api/auth/google/callback'
+  }, 
+  (accessToken, refreshToken, profile, done) => {
+    axios.post('http://localhost:3000/api/user/createOrGet', { profile: profile })
+      .then((res) => {
+        // console.log(res)
+        done(null, res)
+      })
+      .catch((err) => {
+        console.error(err)
+        done(err.errno)
+      })
+  })
+)
+
+app.use('/api', Api)
+
+app.use((req, res, next) => {
+  let err = new Error('Not Found')
   err.status = 404
   next(err)
 })
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 

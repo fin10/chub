@@ -6,5 +6,5 @@ module.exports = merge(prod, {
     output: {
         publicPath: '/'
     },
-    devtool: 'inline-source-map',
+    devtool: 'inline-source-map'
 })

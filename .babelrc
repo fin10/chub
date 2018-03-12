@@ -8,6 +8,6 @@
         "react"
     ],
     "plugins": [
-        "dotenv-import"
+        "inline-dotenv"
     ]
 }

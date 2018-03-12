@@ -24,4 +24,12 @@ router.post('/createOrGet', (req, res) => {
   })
 })
 
+router.get('/:id', (req, res) => {
+  User.findOne({ id: req.params.id }, (err, user) => {
+      if (err) return res.status(500).send(err.msg)
+      if (user) return res.send(user)
+      return res.send(null)
+  })
+})
+
 export default router

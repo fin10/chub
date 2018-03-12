@@ -12,20 +12,22 @@
             "type": "node",
             "request": "launch",
             "name": "Server",
+            "cwd": "${workspaceFolder}",
             "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
             "runtimeArgs": [
                 "--exec",
                 "${workspaceFolder}/node_modules/.bin/babel-node",
-                "${workspaceFolder}/server/main.js",
+                "./server/main.js",
                 "--watch",
-                "${workspaceFolder}/server"
+                "./server"
             ],
             "envFile": "${workspaceFolder}/.env",
             "env": {
                 "NODE_ENV": "development"
             },
             "restart": true,
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
         }
     ],
     "compounds": [

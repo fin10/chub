@@ -13,7 +13,6 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
-    "express-react-views": "^0.10.5",
     "express-session": "^1.15.6",
     "jade": "~1.11.0",
     "mongoose": "^5.0.9",
@@ -22,7 +21,6 @@
     "passport-google-oauth": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-helmet": "^5.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "serve-favicon": "~2.4.5"

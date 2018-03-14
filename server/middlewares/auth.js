@@ -21,14 +21,6 @@ export default (app) => {
       })
   })
 
-  app.use((req, res, next) => {
-    if (req.user || req.path.startsWith('/login') || req.path.startsWith('/auth') || req.path.startsWith('/api')) {
-      next()
-    } else {
-      res.redirect('/login')
-    }
-  })
-    
   app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
   )

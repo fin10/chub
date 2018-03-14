@@ -5,14 +5,17 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import util from 'util'
-import reactViewEngine from 'express-react-views'
 
-import auth from './auth'
-import database from './model/database'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import config from '../webpack.dev.config'
+
+import authMiddleware from './middlewares/auth'
+import dbMiddleware from './middlewares/database'
 import axios from 'axios'
 
 import Api from './routes/api'
-import App from './routes/app'
 
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || '3000'
@@ -20,10 +23,6 @@ const port = process.env.PORT || '3000'
 axios.defaults.baseURL = util.format('http://%s:%s', host, port)
 
 const app = express()
-
-app.set('views', path.resolve(__dirname, '../src'))
-app.set('view engine', 'jsx')
-app.engine('jsx', reactViewEngine.createEngine())
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
@@ -35,11 +34,31 @@ app.use(session({
 }))
 app.use(cookieParser())
 
-database()
-auth(app)
+authMiddleware(app)
+dbMiddleware()
 
 app.use('/api', Api)
-app.use('/', App)
+
+const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'production'
+if (env == 'development') {
+  console.log('Server is running on development mode.')
+  const compiler = webpack(config)
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+  }))
+
+  app.use(webpackHotMiddleware(compiler))
+
+  app.get('*', (req, res, next) => {
+    const filename = path.join(config.output.path, 'index.html')
+    compiler.outputFileSystem.readFile(filename, (err, result) => {
+      if (err) return next(err)
+      res.set('content-type', 'text/html')
+      res.send(result)      
+      res.end()
+    })
+  })
+}
 
 app.use((req, res, next) => {
   let err = new Error('Not Found')

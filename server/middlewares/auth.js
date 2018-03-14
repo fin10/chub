@@ -21,6 +21,14 @@ export default (app) => {
       })
   })
 
+  app.get('/', (req, res, next) => {
+    if (req.isAuthenticated() || req.path.startsWith('/login') || req.path.startsWith('/auth')) {
+      res.redirect('/profile/' + req.user.id)
+    } else {
+      res.redirect('/login')
+    }
+  })
+    
   app.get('/auth/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
   )
@@ -29,7 +37,7 @@ export default (app) => {
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
       console.log('user:', req.user)
-      res.redirect('/')
+      res.redirect('/profile/' + req.user.id)
     }
   )
   

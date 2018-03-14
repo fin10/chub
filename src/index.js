@@ -11,9 +11,9 @@ const root = document.getElementById('root')
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route exact path='/'><App /></Route>
-      <Route path='/login'><Login /></Route>
-      <Route path='/profile/:id'><Profile /></Route>
+      <Route exact path='/' component={App} />
+      <Route path='/login' component={Login} />
+      <Route path='/profile/:id' component={Profile} />
     </Switch>
   </Router>,
   root

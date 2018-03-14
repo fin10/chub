@@ -4,7 +4,7 @@ import logger from 'morgan'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
-import util from 'util'
+import Util from 'util'
 
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -20,7 +20,7 @@ import Api from './routes/api'
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || '3000'
 
-axios.defaults.baseURL = util.format('http://%s:%s', host, port)
+axios.defaults.baseURL = Util.format('http://%s:%s', host, port)
 
 const app = express()
 

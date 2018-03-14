@@ -1,6 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 
+import ProfilePanel from '../components/ProfilePanel'
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -20,10 +22,15 @@ export default class App extends React.Component {
     })
   }
 
+  componentWillMount() {
+    document.body.style.margin = 0;
+    document.body.style.padding = 0;
+  }
+
   render() {
     return ( 
       <div>
-        <h1>{ this.state.user && this.state.user.username }</h1>
+        <ProfilePanel user={this.state.user} />
       </div>
     )
   }

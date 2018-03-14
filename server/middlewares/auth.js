@@ -30,13 +30,12 @@ export default (app) => {
   })
     
   app.get('/auth/google',
-    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
+    passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] })
   )
 
   app.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
-      console.log('user:', req.user)
       res.redirect('/profile/' + req.user.id)
     }
   )

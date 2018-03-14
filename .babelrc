@@ -8,6 +8,7 @@
         "react"
     ],
     "plugins": [
-        "inline-dotenv"
+        "inline-dotenv",
+        "transform-class-properties"
     ]
 }

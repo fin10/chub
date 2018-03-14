@@ -1,0 +1,24 @@
+.profile-panel {
+    background-color: tomato;
+    color: white;
+    padding: 20px;
+}
+
+.profile-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.profile-main {
+    font-size: 36px;
+}
+
+.profile-sub {
+    font-size: 14px;
+}
+
+.profile-bottom-margin {
+    margin-bottom: 4px;
+}

@@ -23,7 +23,7 @@ export default (app) => {
 
   app.get('/', (req, res, next) => {
     if (req.isAuthenticated() || req.path.startsWith('/login') || req.path.startsWith('/auth')) {
-      res.redirect('/profile/' + req.user.id)
+      next()
     } else {
       res.redirect('/login')
     }
@@ -36,7 +36,7 @@ export default (app) => {
   app.get('/auth/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
-      res.redirect('/profile/' + req.user.id)
+      res.redirect('/' + req.user.id)
     }
   )
   

@@ -11,16 +11,16 @@ export default class UserView extends React.Component {
 
   constructor(props) {
     super(props)
-    const { id } = props.match.params
+    const { userId } = props.match.params
 
-    axios.get("/api/user/" + id)
+    axios.get("/api/user/" + userId)
     .then((res) => {
       this.setState({
         user: res.data
       })
     })
     .catch((err) => {
-      console.error(err)
+      console.error(err.response)
     })
   }
 
@@ -28,13 +28,12 @@ export default class UserView extends React.Component {
     if (!this.state) return <div />
 
     const { user } = this.state
-    const { series } = user
 
     return ( 
       <div>
         <Header />
         <Profile user={user} />
-        <SeriesList series={series} />
+        <SeriesList series={user.series} />
       </div>
     )
   }

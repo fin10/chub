@@ -46,6 +46,7 @@
     "eslint-plugin-react": "^7.7.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.0.6",
+    "mocha": "^5.0.4",
     "node-sass": "^4.7.2",
     "nodemon": "^1.17.2",
     "resolve-url-loader": "^2.3.0",

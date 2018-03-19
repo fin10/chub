@@ -6,26 +6,26 @@ const router = express.Router()
 
 router.post('/new', (req, res) => {
   if (!req.body.title || req.body.title.length == 0) {
-    return res.status(500).send(new Error('title is empty.'))
+    return res.status(500).send('title should not be empty.')
   }
 
   if (!req.user) {
-    return res.status(500).send(new Error('Need to login.'))
+    return res.status(500).send('Login needed.')
   }
 
   const title = req.body.title
   const desc = req.body.desc
-  const owner = req.user._id
+  const userId = req.user._id
 
-  User.findById(owner)
+  User.findById(userId)
     .then(user => {
-      if (!user) return Promise.reject(new Error(owner + ' not found.'))
+      if (!user) return Promise.reject(req.user.id + ' not found.')
 
       const newSeries = new Series({
+        id: title.replace(/[~!@#$%^&*()+`\\<>?/'":;\[\]{}]/g, '').replace(/\s/g, '-'),
         title: title,
         description: desc,
-        owner: owner,
-        creationTime: Date.now()
+        owner: user,
       })
 
       newSeries.save()
@@ -34,27 +34,30 @@ router.post('/new', (req, res) => {
             .then(() => {
               res.send(series)
             })
-        })
-        .catch(err => {
+        }).catch(err => {
           console.error(err)
-          res.send(err)
+          res.status(500).send(err.message)
         })
     })
     .catch(err => {
       console.error(err)
-      res.send(err)
+      res.status(500).send(err.message)
     })
 })
 
-router.get('/:id', (req, res) => {
-  Series.findById(req.params.id)
-    .populate('owner')
-    .then((series) => {
+router.get('/:userId/:seriesId', (req, res) => {
+  const { userId, seriesId } = req.params
+
+  User.findOne({ id: userId })
+    .then(user => {
+      return Series.findOne({ id: seriesId, owner: user._id }).populate(['owner', 'works'])
+    })
+    .then(series => {
       res.json(series)
     })
     .catch(err => {
       console.error(err)
-      res.send(err)
+      res.send(err.message)
     })
 })
 

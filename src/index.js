@@ -11,8 +11,8 @@ ReactDOM.render(
     <Switch>
       <Route path="/login" component={LoginView} />
       <Route path="/new" component={NewSeriesView} />
-      <Route path="/:id" component={UserView} />
-      <Route path="/series/:id" component={SeriesView} />
+      <Route path="/:userId/:seriesId" component={SeriesView} />
+      <Route path="/:userId" component={UserView} />
     </Switch>
   </Router>,
   root

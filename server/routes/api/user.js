@@ -2,42 +2,50 @@ import express from 'express'
 import Url from 'url'
 import Util from 'util'
 
-import { User, Series } from '../../model'
+import { User } from '../../model'
 
 const router = express.Router()
 
+router.get('/current', (req, res) => {
+  return res.json(req.user)
+})
+
 router.post('/createOrGet', (req, res) => {
   if (!req.body.profile) {
-    return res.status(500).send(new Error('profile is empty.'))
+    return res.status(500).send('profile is empty.')
   }
 
-  const profile = req.body.profile
+  const { profile } = req.body
 
-  User.findOne({ id: profile.id }, (err, user) => {
-      if (err) return res.status(500).send(err)
-      if (user) return res.json(user)
+  if (profile.emails.length == 0) {
+    return res.status(500).send('There is no email.')
+  }
+
+  const id = profile.emails[0].value.substring(0, profile.emails[0].value.indexOf('@'))
+
+  User.findOne({ id: id }, (err, user) => {
+      if (err) return Promise.reject(err)
+      if (user) return user
 
       user = new User({
-        id: profile.id,
+        id: id,
         username: profile.displayName,
-        creationTime: Date.now(),
+        email: profile.emails[0].value
       })
 
-      if (profile.emails.length > 0) user.email = profile.emails[0].value
       if (profile.photos.length > 0) {
         const url = Url.parse(profile.photos[0].value)
         user.photo = Util.format('%s//%s%s', url.protocol, url.hostname, url.pathname)
       }
 
-      user.save((err, user) => {
-        if (err) return res.status(500).send(err)
-        return res.json(user)
-      })
-  })
-})
-
-router.get('/current', (req, res) => {
-  return res.json(req.user)
+      return user.save()
+    })
+    .then(user => {
+      res.json(user)
+    })
+    .catch(err => {
+      res.status(500).send(err.message)
+    })
 })
 
 router.get('/:id', (req, res) => {
@@ -48,15 +56,13 @@ router.get('/:id', (req, res) => {
     })
     .then(user => {
       if (!user) {
-        let err = new Error('req.params.id doesn\'t exists.')
-        err.statusCode = 404
-        return Promise.reject(err)
+        return Promise.reject(new Error(req.params.id + ' not found.'))
       }
 
       res.json(user)
     })
     .catch(err => {
-      res.send(err)
+      res.status(500).send(err.message)
     })
 })
 

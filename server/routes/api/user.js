@@ -49,16 +49,9 @@ router.post('/createOrGet', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-  User.findOne({ id: req.params.id })
-    .populate({
-      path: 'series',
-      populate: { path: 'owner' }
-    })
+  User.findOne({ id: req.params.id }).populate({ path: 'series', populate: 'owner' })
     .then(user => {
-      if (!user) {
-        return Promise.reject(new Error(req.params.id + ' not found.'))
-      }
-
+      if (!user) return Promise.reject(req.params.id + ' not found.')
       res.json(user)
     })
     .catch(err => {

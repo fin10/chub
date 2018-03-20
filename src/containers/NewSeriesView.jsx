@@ -1,6 +1,6 @@
-import React from 'react'
-import axios from 'axios'
-import Util from 'util'
+import React from "react"
+import axios from "axios"
+import Util from "util"
 
 export default class NewSeries extends React.Component {
 

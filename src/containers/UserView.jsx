@@ -1,11 +1,13 @@
-import React from 'react'
-import axios from 'axios'
+import React from "react"
+import axios from "axios"
+
+import { Link } from "react-router-dom"
 
 import {
   Header,
   Profile,
   SeriesList
-} from '../components'
+} from "../components"
 
 export default class UserView extends React.Component {
 
@@ -33,6 +35,9 @@ export default class UserView extends React.Component {
       <div>
         <Header />
         <Profile user={user} />
+        <Link to="/new">
+          <button>New series</button>
+        </Link>
         <SeriesList series={user.series} />
       </div>
     )

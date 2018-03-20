@@ -1,6 +1,7 @@
 import express from 'express'
+import keyGen from '../../util/key-generator'
 
-import { User, Series } from '../../model'
+import { User, Series, Work } from '../../model'
 
 const router = express.Router()
 
@@ -21,23 +22,19 @@ router.post('/new', (req, res) => {
     .then(user => {
       if (!user) return Promise.reject(req.user.id + ' not found.')
 
-      const newSeries = new Series({
-        id: title.replace(/[~!@#$%^&*()+`\\<>?/'":;\[\]{}]/g, '').replace(/\s/g, '-'),
+      return new Series({
+        id: keyGen(title),
         title: title,
         description: desc,
         owner: user,
-      })
-
-      newSeries.save()
-        .then(series => {
-          user.update({ series: user.series.concat([series._id]) })
-            .then(() => {
-              res.send(series)
-            })
-        }).catch(err => {
-          console.error(err)
-          res.status(500).send(err.message)
-        })
+      }).save()
+    })
+    .then(series => {
+      const { owner } = series
+      return owner.update({ series: owner.series.concat([series]) })
+                .then(() => {
+                  res.send(series)
+                })
     })
     .catch(err => {
       console.error(err)
@@ -50,10 +47,17 @@ router.get('/:userId/:seriesId', (req, res) => {
 
   User.findOne({ id: userId })
     .then(user => {
-      return Series.findOne({ id: seriesId, owner: user._id }).populate(['owner', 'works'])
+      if (!user) return Promise.reject(userId + ' not found.')
+      return Series.findOne({ id: seriesId, owner: user._id }).populate('owner')
     })
     .then(series => {
-      res.json(series)
+      return Work.find({ series: series }).populate(['owner', { path: 'series', populate: 'owner' }])
+                .then(works => {
+                  res.json({
+                    series: series,
+                    works: works ? works : []
+                  })
+                })
     })
     .catch(err => {
       console.error(err)

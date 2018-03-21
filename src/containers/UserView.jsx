@@ -16,13 +16,13 @@ export default class UserView extends React.Component {
     const { userId } = props.match.params
 
     axios.get("/api/user/" + userId)
-    .then((res) => {
+    .then(res => {
       this.setState({
         user: res.data
       })
     })
-    .catch((err) => {
-      console.error(err.response)
+    .catch(err => {
+      console.error(err.response.data)
     })
   }
 

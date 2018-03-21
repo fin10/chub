@@ -51,7 +51,7 @@ router.get('/:userId/:seriesId', (req, res) => {
       return Series.findOne({ id: seriesId, owner: user._id }).populate('owner')
     })
     .then(series => {
-      return Work.find({ series: series }).populate(['owner', { path: 'series', populate: 'owner' }])
+      return Work.find({ series: series }).populate(['owner', { path: 'series', populate: { path: 'owner' } }])
                 .then(works => {
                   res.json({
                     series: series,

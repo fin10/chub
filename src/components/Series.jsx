@@ -1,13 +1,12 @@
 import React from 'react'
 import PropsType from 'prop-types'
-import Util from 'util'
 
-import { Link } from 'react-router-dom'
+import './Series.scss'
 
 export default class Series extends React.Component {
 
   static propsType = {
-    series: PropsType.object
+    series: PropsType.object.isRequired
   }
   
   render() {
@@ -15,10 +14,13 @@ export default class Series extends React.Component {
 
     return (
       <div>
-        <Link to={Util.format('/%s/%s', series.owner.id, series.id)}>
-          <div>{series.title}</div>
-          <div>by {series.owner.username}</div>
-        </Link>
+        <div className="header-contents grey-text text-darken-1">{series.owner.id}</div>
+        <div className="main-contents">{series.title}</div>
+        <div className="sub-contents grey-text text-darken-2">
+          <span>Awesomes {series.awesomes.length}</span>
+          <span>Follows {series.follows.length}</span>
+          <span>Folks {series.folks.length}</span>
+        </div>
       </div>
     )
   }

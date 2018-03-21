@@ -22,7 +22,7 @@ export default class UserView extends React.Component {
       })
     })
     .catch(err => {
-      console.error(err.response.data)
+      console.error(err.response)
     })
   }
 
@@ -34,11 +34,15 @@ export default class UserView extends React.Component {
     return ( 
       <div>
         <Header />
-        <Profile user={user} />
-        <Link to="/new">
-          <button>New series</button>
-        </Link>
-        <SeriesList series={user.series} />
+        <div className="row">
+          <div className="col s2">
+            <Profile user={user} />
+          </div>
+          <div className="col s10">
+            <a className="waves-effect waves-light btn" href="/new">New series</a>
+            <SeriesList series={user.series} />
+          </div>
+        </div>
       </div>
     )
   }

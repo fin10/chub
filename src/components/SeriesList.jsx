@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Util from 'util'
 
 import { Series } from './'
 
@@ -13,8 +14,14 @@ export default class SeriesList extends React.Component {
     const { series } = this.props
 
     return (
-      <div>
-        {series.map(item => <Series key={item._id} series={item} />)}
+      <div className="collection">
+        {
+          series.map(item => 
+            <a key={item._id} className="collection-item" href={Util.format('/%s/%s', item.owner.id, item.id)}>
+              <Series series={item} />
+            </a>
+          )
+        }
       </div>
     )
   }

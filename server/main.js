@@ -37,6 +37,7 @@ app.use(cookieParser())
 authMiddleware(app)
 dbMiddleware()
 
+app.use('/static', express.static(path.join(__dirname, '../public')))
 app.use('/api', Api)
 
 const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'production'

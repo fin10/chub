@@ -10,7 +10,7 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route path="/login" component={LoginView} />
-      <Route path="/:userId" component={ClientApp} />
+      <Route path="/" component={ClientApp} />
     </Switch>
   </Router>,
   root

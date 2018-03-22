@@ -1,3 +1,4 @@
+import DashboardView from './DashboardView'
 import LoginView from './LoginView'
 import ClientApp from './ClientApp'
 import SeriesListView from './SeriesListView'
@@ -6,4 +7,4 @@ import WorkView from './WorkView'
 import NewSeriesView from './NewSeriesView'
 import NewWorkView from './NewWorkView'
 
-export { LoginView, ClientApp, SeriesListView, SeriesView, WorkView, NewSeriesView, NewWorkView }
+export { DashboardView, LoginView, ClientApp, SeriesListView, SeriesView, WorkView, NewSeriesView, NewWorkView }

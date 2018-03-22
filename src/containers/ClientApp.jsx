@@ -3,7 +3,7 @@ import React from "react"
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { Header, Profile } from '../components'
-import { NewSeriesView, NewWorkView, SeriesListView, SeriesView, WorkView } from './'
+import { DashboardView, NewSeriesView, NewWorkView, SeriesListView, SeriesView, WorkView } from './'
 
 export default class ClientApp extends React.Component {
 
@@ -24,6 +24,7 @@ export default class ClientApp extends React.Component {
                   <Route path="/:userId/:seriesId/:workId" component={WorkView} />
                   <Route path="/:userId/:seriesId" component={SeriesView} />
                   <Route path="/:userId" component={SeriesListView} />
+                  <Route path="/" component={DashboardView} />
                 </Switch>
               </Router>
             </div>

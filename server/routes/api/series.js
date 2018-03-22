@@ -16,7 +16,7 @@ router.post('/new', (req, res) => {
 
   const title = req.body.title
   const desc = req.body.desc
-  const tags = req.body.tags ? req.body.tags : []
+  const tags = req.body.tags ? [...new Set(req.body.tags)] : []
   const userId = req.user._id
 
   User.findById(userId)

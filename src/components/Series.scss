@@ -4,14 +4,24 @@ div.header-contents {
 
 div.main-contents {
     font-size: 24px;
+    margin-bottom: 4px;
 }
 
 div.sub-contents {
-    margin-top: 8px;
+    margin-top: 6px;
 
     span {
         margin-right: 8px;
-        font-size: 14px;
-        // color: #616161;
+        font-size: 12px;
     }
+}
+
+div.tag {
+    display: inline;
+    font-size: 12px;
+    padding: 2px 8px;
+    margin-right: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
 }

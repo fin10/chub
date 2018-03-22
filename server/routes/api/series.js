@@ -50,20 +50,28 @@ router.get('/:userId/:seriesId', (req, res) => {
   User.findOne({ id: userId })
     .then(user => {
       if (!user) return Promise.reject(userId + ' not found.')
-      return Series.findOne({ id: seriesId, owner: user._id }).populate('owner')
+      return Series.findOne({ id: seriesId, owner: user._id }).populate({ path: 'works', 'populate': { path: 'owner' } })
     })
     .then(series => {
-      return Work.find({ series: series }).populate(['owner', { path: 'series', populate: { path: 'owner' } }])
-                .then(works => {
-                  res.json({
-                    series: series,
-                    works: works ? works : []
-                  })
-                })
+      res.send(series)
     })
     .catch(err => {
       console.error(err)
-      res.send(err.message)
+      res.status(500).send(err.message)
+    })
+})
+
+router.get('/:userId', (req, res) => {
+  const { userId } = req.params
+
+  User.findOne({ id: userId }).populate({ path: 'series', 'populate': { path: 'owner' } })
+    .then(user => {
+      if (!user) return Promise.reject(userId + ' not found.')
+      res.json(user.series)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).send(err.message)
     })
 })
 

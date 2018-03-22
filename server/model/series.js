@@ -9,6 +9,7 @@ const Series = new Schema({
     creationTime: { type: Date, default: Date.now() },
     owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     tags: [{ type: String, trim: true, lowercase: true }],
+    works: [{ type: Schema.Types.ObjectId, ref: 'work' }],
     awesomes: [{ type: Schema.Types.ObjectId, ref: 'user' }],
     follows: [{ type: Schema.Types.ObjectId, ref: 'user' }],
     folks: [{ type: Schema.Types.ObjectId, ref: 'user' }]

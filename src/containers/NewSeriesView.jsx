@@ -2,8 +2,6 @@ import React from "react"
 import axios from "axios"
 import Util from "util"
 
-import { Header } from "../components"
-
 export default class NewSeries extends React.Component {
 
   componentDidMount() {
@@ -41,25 +39,24 @@ export default class NewSeries extends React.Component {
   render() {
     return (
       <div>
-        <Header />
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <h4>New Series</h4>
-            </div>
-            <div className="input-field col s12">
-              <input id="new-series-title" className="validate" type="text" data-length="40" ref="title" />
-              <label htmlFor="new-series-title">Title</label>
-            </div>
-            <div className="input-field col s12">
-              <textarea id="new-series-desc" className="materialize-textarea" data-length="200" ref="desc"></textarea>
-              <label htmlFor="new-series-desc">Description</label>
-            </div>
-            <div className="input-field col s12">
-              <div id="new-series-tags" className="chips" ref="tags"></div>
-            </div>
+        <div>
+          <div className="col s12">
+            <h4>New Series</h4>
           </div>
-          <a className="waves-effect waves-light btn" onClick={this._handleSaveButton.bind(this)}>Save</a>
+          <div className="input-field col s12">
+            <input id="new-series-title" className="validate" type="text" data-length="40" ref="title" />
+            <label htmlFor="new-series-title">Title</label>
+          </div>
+          <div className="input-field col s12">
+            <textarea id="new-series-desc" className="materialize-textarea" data-length="200" ref="desc"></textarea>
+            <label htmlFor="new-series-desc">Description</label>
+          </div>
+          <div className="input-field col s12">
+            <div id="new-series-tags" className="chips" ref="tags"></div>
+          </div>
+          <div className="col s12">
+            <a className="right waves-effect waves-light btn" onClick={this._handleSaveButton.bind(this)}>Save</a>
+          </div>
         </div>
         <div id="error-modal" className="modal">
           <div className="modal-content">

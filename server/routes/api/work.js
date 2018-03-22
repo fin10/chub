@@ -26,7 +26,7 @@ router.post('/new', (req, res) => {
       if (!series) return Promise.reject(userId + '/' + seriesId + ' not found.')
 
       return new Contents({
-        contents: contents
+        body: contents
       }).save()
         .then(contents => {
           return new Work({
@@ -38,9 +38,12 @@ router.post('/new', (req, res) => {
             contents: contents._id
           }).save()
         })
-    })
-    .then(work => {
-      res.send(work)
+        .then(work => {
+          return series.update({ works: series.works.concat([work]) })
+                      .then(() => {
+                        res.send(work)
+                      })
+        })
     })
     .catch(err => {
       console.error(err)
@@ -59,7 +62,7 @@ router.get('/:userId/:seriesId/:workId', (req, res) => {
     .then(series => {
       if (!series) return Promise.reject(series + ' not found.')
       return Work.findOne({ id: workId, series: series._id })
-                .populate(['contents', 'owner', 'series'])
+                .populate(['contents', 'owner', {path: 'series', populate: {path: 'owner'}}])
     })
     .then(work => {
       res.json(work)

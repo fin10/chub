@@ -2,25 +2,22 @@ import React from 'react'
 import axios from 'axios'
 import Util from 'util'
 
-import { Link } from 'react-router-dom'
+import { Work } from '../components'
 
-import {
-  Header,
-  Profile,
-  WorkList
-} from '../components'
+import './SeriesView.scss'
+import '../components/Tag.scss'
 
 export default class SeriesView extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = { series: null }
     const { userId, seriesId } = props.match.params
 
     axios.get(Util.format('/api/series/%s/%s', userId, seriesId))
       .then(res => {
         this.setState({
-          series: res.data.series,
-          works: res.data.works
+          series: res.data,
         })
       })
       .catch(err => {
@@ -29,23 +26,28 @@ export default class SeriesView extends React.Component {
   }
 
   render() {
-    if (!this.state) return <div />
+    const { series } = this.state
+    const { userId, seriesId } = this.props.match.params
 
-    const { series, works } = this.state
-    const { owner } = series
-
-    return ( 
+    return (series && 
       <div>
-        <Header />
-        <Profile user={owner} />
-        <div>
-          <div>{series.title}</div>
-          <div>{series.description}</div>
+        <div id="series-section">
+          <h4>{series.title}</h4>
+          <p>{series.description}</p>
+          {series.tags && 
+            <div>
+              {series.tags.map(tag => <div key={tag} className="tag">#{tag}</div>)}
+            </div>
+          }
         </div>
-        <Link to={Util.format('/%s/%s/new', owner.id, series.id)}>
-          <button>New work</button>
-        </Link>
-        <WorkList works={works} />
+        <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+        <div className="collection">
+          {series.works.map(item => 
+            <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>
+              <Work work={item} />
+            </a>
+          )}
+        </div>
       </div>
     )
   }

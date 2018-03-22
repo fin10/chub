@@ -1,12 +1,14 @@
 import React from 'react'
 import PropsType from 'prop-types'
 
-import './Series.scss'
+import './ListItem.scss'
+import './Tag.scss'
 
 export default class Series extends React.Component {
 
   static propsType = {
-    series: PropsType.object.isRequired
+    series: PropsType.object.isRequired,
+    works: PropsType.array.isRequired
   }
   
   render() {
@@ -22,6 +24,7 @@ export default class Series extends React.Component {
           </div>
         }
         <div className="sub-contents grey-text text-darken-2">
+          <span>Works {series.works.length}</span>
           <span>Awesomes {series.awesomes.length}</span>
           <span>Follows {series.follows.length}</span>
           <span>Folks {series.folks.length}</span>

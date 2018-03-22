@@ -1,25 +1,24 @@
 import React from 'react'
 import PropsType from 'prop-types'
-import Util from 'util'
 
-import { Link } from 'react-router-dom'
+import './ListItem.scss'
 
 export default class Work extends React.Component {
 
   static propsType = {
-    work: PropsType.object
+    work: PropsType.object.isRequired
   }
   
   render() {
     const { work } = this.props
-    const { series } = work
 
     return (
       <div>
-        <Link to={Util.format('/%s/%s/%s', series.owner.id, series.id, work.id)}>
-          <div>{work.title}</div>
-          <div>by {work.owner.username}</div>
-        </Link>
+        <div className="header-contents grey-text text-darken-1">{work.owner.id}</div>
+        <div className="main-contents">{work.title}</div>
+        <div className="sub-contents grey-text text-darken-2">
+          <span>Awesomes {work.awesomes.length}</span>
+        </div>
       </div>
     )
   }

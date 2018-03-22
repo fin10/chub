@@ -19,11 +19,22 @@ export default class Profile extends React.Component {
     } = this.props.user
 
     return (
-      <div>
-        <img className="profile-photo" src={photo} />
-        <div className="profile-main profile-bottom-margin">{username}</div>
-        <div className="profile-sub profile-bottom-margin">{email}</div>
-        <div className="profile-sub">Follows { follows ? follows.length : 0 }</div>
+      <div className="row">
+        <div className="col">
+          <div className="card">
+            <div className="card-image">
+              <img src={photo} />
+            </div>
+            <div className="card-content">
+              <div className="card-title">{username}</div>
+              <div>{email}</div>              
+              <div>Followers { follows ? follows.length : 0 }</div>
+            </div>
+            <div className="card-action">
+              <a>Follow</a> 
+            </div>
+          </div>
+        </div>
       </div>
     )
   }

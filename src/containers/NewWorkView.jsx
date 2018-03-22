@@ -6,6 +6,10 @@ export default class NewWork extends React.Component {
   
   constructor(props) {
     super(props)
+    this.state = {
+      types: []
+    }
+
     axios.get('/api/work/types')
       .then(res => {
         this.setState({
@@ -42,8 +46,6 @@ export default class NewWork extends React.Component {
   }
 
   render() {
-    if (!this.state) return <div/>
-
     return (
       <div>
         <h1>New Work</h1>

@@ -1,13 +1,7 @@
 import React from "react"
 import axios from "axios"
 
-import { Link } from "react-router-dom"
-
-import {
-  Header,
-  Profile,
-  SeriesList
-} from "../components"
+import { Header, Profile, SeriesList } from "../components"
 
 export default class UserView extends React.Component {
 
@@ -34,13 +28,15 @@ export default class UserView extends React.Component {
     return ( 
       <div>
         <Header />
-        <div className="row">
-          <div className="col s2">
-            <Profile user={user} />
-          </div>
-          <div className="col s10">
-            <a className="waves-effect waves-light btn" href="/new">New series</a>
-            <SeriesList series={user.series} />
+        <div className="container">
+          <div className="row">
+            <div className="col s3">
+              <Profile user={user} />
+            </div>
+            <div className="col s9">
+              <a className="waves-effect waves-light btn" href="/new">New series</a>
+              <SeriesList series={user.series} />
+            </div>
           </div>
         </div>
       </div>

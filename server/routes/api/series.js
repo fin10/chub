@@ -16,6 +16,7 @@ router.post('/new', (req, res) => {
 
   const title = req.body.title
   const desc = req.body.desc
+  const tags = req.body.tags ? req.body.tags : []
   const userId = req.user._id
 
   User.findById(userId)
@@ -27,6 +28,7 @@ router.post('/new', (req, res) => {
         title: title,
         description: desc,
         owner: user,
+        tags: tags
       }).save()
     })
     .then(series => {

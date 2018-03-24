@@ -1,12 +1,12 @@
 import React from 'react'
-import PropsType from 'prop-types'
+import PropTypes from 'prop-types'
 
 import './ListItem.scss'
 
 export default class Work extends React.Component {
 
-  static propsType = {
-    work: PropsType.object.isRequired
+  static propTypes = {
+    work: PropTypes.object.isRequired
   }
   
   render() {

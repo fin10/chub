@@ -1,14 +1,13 @@
 import React from 'react'
-import PropsType from 'prop-types'
+import PropTypes from 'prop-types'
 
 import './ListItem.scss'
 import './Tag.scss'
 
 export default class Series extends React.Component {
 
-  static propsType = {
-    series: PropsType.object.isRequired,
-    works: PropsType.array.isRequired
+  static propTypes = {
+    series: PropTypes.object.isRequired
   }
   
   render() {

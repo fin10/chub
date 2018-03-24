@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Util from 'util'
 
-import { Work } from '../components'
+import { Work, ActionButton } from '../components'
 
 import './SeriesView.scss'
 import '../components/Tag.scss'
@@ -26,6 +26,35 @@ export default class SeriesView extends React.Component {
       })
   }
 
+  _handleActionButtonClick(id) {
+    const { userId, seriesId } = this.props.match.params
+
+    let url = null
+    switch (id) {
+      case 'awesomeButton':
+        url = Util.format('/api/action/awesome?userId=%s&seriesId=%s', userId, seriesId)
+        break;
+      case 'followButton':
+        url = Util.format('/api/action/follow?userId=%s&seriesId=%s', userId, seriesId)
+        break;
+      case 'folkButton':
+        url = Util.format('/api/action/folk?userId=%s&seriesId=%s', userId, seriesId)
+        break;
+    }
+
+    if (url) {
+      axios.post(url)
+          .then(res => {
+            this.setState({
+              series: res.data
+            })
+          })
+          .catch(err => {
+            console.error(err.response)
+          })
+    }
+  }
+
   render() {
     const { login, series } = this.state
     const { userId, seriesId } = this.props.match.params
@@ -41,8 +70,38 @@ export default class SeriesView extends React.Component {
             </div>
           }
         </div>
-        {login && login.id == userId &&
-          <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+        {login &&
+          <table>
+            <tbody>
+              <tr>
+                {login.id == userId && 
+                  <td>
+                    <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+                  </td>
+                }
+                <td className="actions">
+                  <ActionButton
+                    id="awesomeButton"
+                    text="Awesomes" 
+                    count={series.awesomes.length} 
+                    active={login.id in series.awesomes} 
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                  <ActionButton 
+                    id="followButton"
+                    text="Follows" 
+                    count={series.follows.length} 
+                    active={login.id in series.follows} 
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                  <ActionButton 
+                    id="folkButton"
+                    text="Folks" 
+                    count={series.folks.length} 
+                    active={login.id in series.folks} 
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         }
         <div className="collection">
           {series.works.map(item => 

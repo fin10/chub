@@ -1,7 +1,7 @@
 import express from 'express'
 import keyGen from '../../util/key-generator'
 
-import { User, Series, Work } from '../../model'
+import { User, Series } from '../../model'
 
 const router = express.Router()
 

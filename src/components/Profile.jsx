@@ -7,19 +7,21 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props)
     this.state = { user: null }
-    const { userId, seriesId, workId } = props.match.params
+    const ids = props.location.pathname.split('/').filter(id => id.length > 0)
+    const userId = ids[0]
+    const seriesId = ids[1]
+    const workId = ids[2]
 
     let promise
     if (workId) {
-      promise = axios.get(Util.format('/api/work/%s/%s/%s'. userId, seriesId, workId))
+      promise = axios.get(Util.format('/api/work/%s/%s/%s', userId, seriesId, workId))
                   .then(res => {
                     this.setState({
                       user: res.data.owner            
                     })
                   })
     } else {
-      let url = (userId && userId != 'new') ? ('/api/user/' + userId) : '/auth/user'
-      promise = axios.get(url)
+      promise = axios.get((userId && userId != 'new') ? ('/api/user/' + userId) : '/auth/user')
                   .then(res => {
                     this.setState({
                       user: res.data

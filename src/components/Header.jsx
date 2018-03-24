@@ -30,12 +30,12 @@ export default class Header extends React.Component {
     const { user } = this.state
 
     const item = user ?
-      <a class="dropdown-button" data-activates="dropdown">{user.username}</a> :
+      <a className="dropdown-button" data-activates="dropdown">{user.username}</a> :
       <a href="/login">Login</a>
 
     return (
       <div>
-        <ul id="dropdown" class="dropdown-content">
+        <ul id="dropdown" className="dropdown-content">
           <li><a href="/">My page</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>

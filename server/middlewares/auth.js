@@ -23,7 +23,6 @@ export default (app) => {
   })
 
   app.get('/', (req, res, next) => {
-    console.log('/:', req.path)
     if (req.isAuthenticated() || req.path.startsWith('/login') || req.path.startsWith('/auth')) {
       next()
     } else {

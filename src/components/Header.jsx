@@ -9,7 +9,7 @@ export default class Header extends React.Component {
     super(props)
     this.state = { user: null }
 
-    axios.get("/api/user/current")
+    axios.get("/auth/user")
     .then(res => {
       this.setState({
         user: res.data
@@ -20,22 +20,34 @@ export default class Header extends React.Component {
     })
   }
 
+  componentDidUpdate() {
+    $(document).ready(() => {
+      $(".dropdown-button").dropdown()      
+    })
+  }
+
   render() {
     const { user } = this.state
 
     const item = user ?
-      <a href={"/" + user.id}>{user.username}</a> :
+      <a class="dropdown-button" data-activates="dropdown">{user.username}</a> :
       <a href="/login">Login</a>
 
     return (
-      <nav className="row grey darken-3">
-        <div className="nav-wrapper col s12">
-          <a className="brand-logo" href="/">C-Hub</a>
-          <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li>{item}</li>
-          </ul>          
-        </div>
-      </nav>
+      <div>
+        <ul id="dropdown" class="dropdown-content">
+          <li><a href="/">My page</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+        <nav className="row grey darken-3">
+          <div className="nav-wrapper col s12">
+            <a className="brand-logo" href="/">C-Hub</a>
+            <ul className="right hide-on-med-and-down">
+              <li>{item}</li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     )
   }
 }

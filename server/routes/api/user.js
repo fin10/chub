@@ -6,10 +6,6 @@ import { User } from '../../model'
 
 const router = express.Router()
 
-router.get('/current', (req, res) => {
-  return res.json(req.user)
-})
-
 router.post('/createOrGet', (req, res) => {
   if (!req.body.profile) {
     return res.status(500).send('profile is empty.')

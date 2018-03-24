@@ -18,7 +18,8 @@ export default class Profile extends React.Component {
                     })
                   })
     } else {
-      promise = axios.get('/api/user/' + ((userId && userId != 'new') ? userId : 'current'))
+      let url = (userId && userId != 'new') ? ('/api/user/' + userId) : '/auth/user'
+      promise = axios.get(url)
                   .then(res => {
                     this.setState({
                       user: res.data

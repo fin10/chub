@@ -1,3 +1,4 @@
+import express from 'express'
 import passport from 'passport'
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
 import axios from 'axios'
@@ -22,21 +23,41 @@ export default (app) => {
   })
 
   app.get('/', (req, res, next) => {
+    console.log('/:', req.path)
     if (req.isAuthenticated() || req.path.startsWith('/login') || req.path.startsWith('/auth')) {
       next()
     } else {
       res.redirect('/login')
     }
   })
+
+  app.get('/login', (req, res, next) => {
+    if (req.isAuthenticated()) {
+      res.redirect('/')
+    } else {
+      next()
+    }
+  })
+
+  app.get('/logout', (req, res) => {
+    req.logout()
+    res.redirect('/login')
+  })
+
+  const router = express.Router()
+  
+  router.get('/user', (req, res) => {
+    return res.json(req.user)
+  })
     
-  app.get('/auth/google',
+  router.get('/google',
     passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.profile.emails.read'] })
   )
 
-  app.get('/auth/google/callback', 
+  router.get('/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }),
     (req, res) => {
-      res.redirect('/' + req.user.id)
+      res.redirect('/')
     }
   )
   
@@ -56,4 +77,6 @@ export default (app) => {
         })
     })
   )
+
+  app.use('/auth', router)
 }

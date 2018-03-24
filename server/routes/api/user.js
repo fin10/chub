@@ -19,29 +19,29 @@ router.post('/createOrGet', (req, res) => {
 
   const id = profile.emails[0].value.substring(0, profile.emails[0].value.indexOf('@'))
 
-  User.findOne({ id: id }, (err, user) => {
-      if (err) return Promise.reject(err)
-      if (user) return user
+  User.findOne({ id: id })
+      .then(user => {
+        if (user) return user
 
-      user = new User({
-        id: id,
-        username: profile.displayName,
-        email: profile.emails[0].value
+        let photo = null
+        if (profile.photos.length > 0) {
+          const url = Url.parse(profile.photos[0].value)
+          photo = Util.format('%s//%s%s', url.protocol, url.hostname, url.pathname)
+        }
+        
+        return new User({
+          id: id,
+          username: profile.displayName ? profile.displayName : id,
+          email: profile.emails[0].value,
+          photo: photo
+        }).save()
       })
-
-      if (profile.photos.length > 0) {
-        const url = Url.parse(profile.photos[0].value)
-        user.photo = Util.format('%s//%s%s', url.protocol, url.hostname, url.pathname)
-      }
-
-      return user.save()
-    })
-    .then(user => {
-      res.json(user)
-    })
-    .catch(err => {
-      res.status(500).send(err.message)
-    })
+      .then(user => {
+        res.json(user)
+      })
+      .catch(err => {
+        res.status(500).send(err.message)
+      })
 })
 
 router.get('/:id', (req, res) => {

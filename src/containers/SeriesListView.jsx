@@ -14,20 +14,22 @@ export default class SeriesListView extends React.Component {
     axios.get("/api/series/" + userId)
     .then(res => {
       this.setState({
-        series: res.data,
+        login: res.data.login,
+        series: res.data.series
       })
     })
     .catch(err => {
       console.error(err.response)
-    })    
+    })
   }
 
   render() {
-    const { series } = this.state
+    const { login, series } = this.state
+    const { userId } = this.props.match.params
 
     return (
       <div>
-        <a className="waves-effect waves-light btn" href="/new">New series</a>
+        {login && login.id == userId && <a className="waves-effect waves-light btn" href="/new">New series</a>}
         <div className="collection">
           {series && series.map(item => 
               <a key={item._id} className="collection-item" href={Util.format('/%s/%s', item.owner.id, item.id)}>

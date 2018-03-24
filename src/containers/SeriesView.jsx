@@ -12,12 +12,13 @@ export default class SeriesView extends React.Component {
   constructor(props) {
     super(props)
     this.state = { series: null }
-    const { userId, seriesId } = props.match.params
+    const { userId, seriesId } = this.props.match.params
 
     axios.get(Util.format('/api/series/%s/%s', userId, seriesId))
       .then(res => {
         this.setState({
-          series: res.data,
+          login: res.data.login,
+          series: res.data.series,
         })
       })
       .catch(err => {
@@ -26,7 +27,7 @@ export default class SeriesView extends React.Component {
   }
 
   render() {
-    const { series } = this.state
+    const { login, series } = this.state
     const { userId, seriesId } = this.props.match.params
 
     return (series && 
@@ -40,7 +41,9 @@ export default class SeriesView extends React.Component {
             </div>
           }
         </div>
-        <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+        {login && login.id == userId &&
+          <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+        }
         <div className="collection">
           {series.works.map(item => 
             <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>

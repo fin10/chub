@@ -6,7 +6,18 @@ export default class NewWork extends React.Component {
   
   constructor(props) {
     super(props)
-    this.state = { types: [] }
+    this.state = { series: null, types: [] }
+    const { userId, seriesId } = this.props.match.params
+
+    axios.get(Util.format('/api/series/%s/%s', userId, seriesId))
+      .then(res => {
+        this.setState({
+          series: res.data.series
+        })
+      })
+      .catch(err => {
+        console.error(err.response)
+      })
 
     axios.get('/api/work/types')
       .then(res => {
@@ -15,7 +26,7 @@ export default class NewWork extends React.Component {
         })
       })
       .catch(err => {
-        console.error(err.response.data)
+        console.error(err.response)
       })
   }
 
@@ -53,9 +64,12 @@ export default class NewWork extends React.Component {
   }
 
   render() {
+    const { series, types } = this.state
+
     return (
       <div>
         <div className="col s12">
+          {series && <h6>{series.title}</h6>}
           <h4>New Work</h4>
         </div>
         <div className="input-field col s12">
@@ -64,7 +78,7 @@ export default class NewWork extends React.Component {
         </div>
         <div className="input-field col s12">
           <select ref="type">
-            {this.state.types.map((type, idx) => <option key={idx} value={type}>{type}</option>)}
+            {types.map((type, idx) => <option key={idx} value={type}>{type}</option>)}
           </select>
           <label>Type</label>
         </div>

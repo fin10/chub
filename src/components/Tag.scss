@@ -1,9 +1,11 @@
 div.tag {
     display: inline;
     font-size: 12px;
-    padding: 2px 8px;
+    padding: 4px 8px;
     margin-right: 6px;
     border-style: solid;
     border-width: 1px;
-    border-radius: 8px;
+    border-radius: 10px;
+    border-color: rgba(97, 97, 97, 0.3);
+    color: #212121;
 }

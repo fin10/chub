@@ -14,7 +14,7 @@ export default (app) => {
   passport.deserializeUser((id, done) => {
     axios.get('/api/user/' + id)
       .then((res) => {
-        done(null, res.data)
+        done(null, res.data.user)
       })
       .catch((err) => {
         console.error(err)

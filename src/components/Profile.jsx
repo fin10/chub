@@ -6,24 +6,34 @@ export default class Profile extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { user: null }
+    this.state = { login: null, user: null }
     const ids = props.location.pathname.split('/').filter(id => id.length > 0)
     const userId = ids[0]
     const seriesId = ids[1]
     const workId = ids[2]
 
     let promise
-    if (workId) {
+    if (workId && workId != 'new') {
       promise = axios.get(Util.format('/api/work/%s/%s/%s', userId, seriesId, workId))
                   .then(res => {
                     this.setState({
-                      user: res.data.owner            
+                      login: res.data.login,
+                      user: res.data.owner
                     })
                   })
-    } else {
-      promise = axios.get((userId && userId != 'new') ? ('/api/user/' + userId) : '/auth/user')
+    } else if (userId && userId != 'new') {
+      promise = axios.get('/api/user/' + userId)
                   .then(res => {
                     this.setState({
+                      login: res.data.login,
+                      user: res.data.user
+                    })
+                  })  
+    } else {
+      promise = axios.get('/auth/user')
+                  .then(res => {
+                    this.setState({
+                      login: res.data,
                       user: res.data
                     })
                   })  
@@ -35,7 +45,7 @@ export default class Profile extends React.Component {
   }
 
   render() {
-    const { user } = this.state
+    const { login, user } = this.state
 
     return (user &&
       <div className="card">
@@ -47,9 +57,11 @@ export default class Profile extends React.Component {
           <div><a className="grey-text text-darken-4" href={'mailto:' + user.email}>{user.email}</a></div>
           <div className="grey-text text-darken-4">Followers { user.follows ? user.follows.length : 0 }</div>
         </div>
+        {login && login.id != user.id && 
         <div className="card-action">
           <a>Follow</a> 
         </div>
+        }
       </div>
     )
   }

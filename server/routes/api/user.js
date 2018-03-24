@@ -48,7 +48,10 @@ router.get('/:id', (req, res) => {
   User.findOne({ id: req.params.id })
     .then(user => {
       if (!user) return Promise.reject(req.params.id + ' not found.')
-      res.json(user)
+      res.json({
+        login: req.user,
+        user: user
+      })
     })
     .catch(err => {
       res.status(500).send(err.message)

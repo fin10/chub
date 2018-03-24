@@ -27,31 +27,38 @@ export default class SeriesView extends React.Component {
   }
 
   _handleActionButtonClick(id) {
+    let { series } = this.state
     const { userId, seriesId } = this.props.match.params
 
-    let url = null
+    let promise = null
     switch (id) {
       case 'awesomeButton':
-        url = Util.format('/api/action/awesome?userId=%s&seriesId=%s', userId, seriesId)
+        promise = axios.post(Util.format('/api/action/awesome?userId=%s&seriesId=%s', userId, seriesId))
+                      .then(res => {
+                        series.awesomes = res.data
+                        this.setState({ series: series })
+                      })
         break;
       case 'followButton':
-        url = Util.format('/api/action/follow?userId=%s&seriesId=%s', userId, seriesId)
+        promise = axios.post(Util.format('/api/action/follow?userId=%s&seriesId=%s', userId, seriesId))
+                      .then(res => {
+                        series.follows = res.data
+                        this.setState({ series: series })
+                      })
         break;
       case 'folkButton':
-        url = Util.format('/api/action/folk?userId=%s&seriesId=%s', userId, seriesId)
+        promise = axios.post(Util.format('/api/action/folk?userId=%s&seriesId=%s', userId, seriesId))
+                      .then(res => {
+                        series.folks = res.data
+                        this.setState({ series: series })
+                      })
         break;
     }
 
-    if (url) {
-      axios.post(url)
-          .then(res => {
-            this.setState({
-              series: res.data
-            })
-          })
-          .catch(err => {
-            console.error(err.response)
-          })
+    if (promise) {
+      promise.catch(err => {
+        console.error(err.response)
+      })
     }
   }
 
@@ -84,19 +91,19 @@ export default class SeriesView extends React.Component {
                     id="awesomeButton"
                     text="Awesomes" 
                     count={series.awesomes.length} 
-                    active={login.id in series.awesomes} 
+                    active={0 < series.awesomes.filter(id => id == login._id).length} 
                     onClick={this._handleActionButtonClick.bind(this)} />
                   <ActionButton 
                     id="followButton"
                     text="Follows" 
                     count={series.follows.length} 
-                    active={login.id in series.follows} 
+                    active={0 < series.follows.filter(id => id == login._id).length} 
                     onClick={this._handleActionButtonClick.bind(this)} />
                   <ActionButton 
                     id="folkButton"
                     text="Folks" 
                     count={series.folks.length} 
-                    active={login.id in series.folks} 
+                    active={0 < series.folks.filter(id => id == login._id).length} 
                     onClick={this._handleActionButtonClick.bind(this)} />
                 </td>
               </tr>

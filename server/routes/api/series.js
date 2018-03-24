@@ -21,7 +21,7 @@ router.post('/new', (req, res) => {
 
   User.findById(userId)
     .then(user => {
-      if (!user) return Promise.reject(req.user.id + ' not found.')
+      if (!user) return Promise.reject(new Error(req.user.id + ' not found.'))
 
       return new Series({
         id: keyGen(title),
@@ -39,7 +39,7 @@ router.post('/new', (req, res) => {
                 })
     })
     .catch(err => {
-      console.error(err)
+      console.error(err.message)
       res.status(500).send(err.message)
     })
 })
@@ -49,7 +49,7 @@ router.get('/:userId/:seriesId', (req, res) => {
 
   User.findOne({ id: userId })
     .then(user => {
-      if (!user) return Promise.reject(userId + ' not found.')
+      if (!user) return Promise.reject(new Error(userId + ' not found.'))
       return Series.findOne({ id: seriesId, owner: user._id }).populate({ path: 'works', 'populate': { path: 'owner' } })
     })
     .then(series => {
@@ -59,7 +59,7 @@ router.get('/:userId/:seriesId', (req, res) => {
       })
     })
     .catch(err => {
-      console.error(err)
+      console.error(err.message)
       res.status(500).send(err.message)
     })
 })
@@ -69,14 +69,14 @@ router.get('/:userId', (req, res) => {
 
   User.findOne({ id: userId }).populate({ path: 'series', 'populate': { path: 'owner' } })
     .then(user => {
-      if (!user) return Promise.reject(userId + ' not found.')
+      if (!user) return Promise.reject(new Error(userId + ' not found.'))
       res.json({
         login: req.user,
         series: user.series
       })
     })
     .catch(err => {
-      console.error(err)
+      console.error(err.message)
       res.status(500).send(err.message)
     })
 })

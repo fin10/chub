@@ -3,6 +3,11 @@
     margin-left: 8px;
     font-size: 12px;
 
+    .active {
+        font-weight: bold;
+        color: #ff5252;
+    }
+
     .ab-txt {
         display: inline;
         padding: 6px 8px;

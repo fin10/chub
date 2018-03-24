@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 
 import './ActionButton.scss'
 
@@ -31,7 +32,7 @@ export default class ActionButton extends React.Component {
 
     return (
       <div className="ab">
-        <div className="ab-txt" onClick={this._handleTextClick.bind(this)}>{text}</div>
+        <div className={classnames('ab-txt', { active: active })} onClick={this._handleTextClick.bind(this)}>{text}</div>
         <div className="ab-cnt">{count}</div>
       </div>
     )

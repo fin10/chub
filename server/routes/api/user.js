@@ -40,6 +40,7 @@ router.post('/createOrGet', (req, res) => {
         res.json(user)
       })
       .catch(err => {
+        console.err(err.message)
         res.status(500).send(err.message)
       })
 })
@@ -47,13 +48,14 @@ router.post('/createOrGet', (req, res) => {
 router.get('/:id', (req, res) => {
   User.findOne({ id: req.params.id })
     .then(user => {
-      if (!user) return Promise.reject(req.params.id + ' not found.')
+      if (!user) return Promise.reject(new Error(req.params.id + ' not found.'))
       res.json({
         login: req.user,
         user: user
       })
     })
     .catch(err => {
+      console.err(err.message)
       res.status(500).send(err.message)
     })
 })

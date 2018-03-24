@@ -23,7 +23,7 @@ router.post('/new', (req, res) => {
       return Series.findOne({ id: seriesId, owner: user._id })
     })
     .then(series => {
-      if (!series) return Promise.reject(userId + '/' + seriesId + ' not found.')
+      if (!series) return Promise.reject(new Error(userId + '/' + seriesId + ' not found.'))
 
       return new Contents({
         body: contents
@@ -46,7 +46,7 @@ router.post('/new', (req, res) => {
         })
     })
     .catch(err => {
-      console.error(err)
+      console.error(err.message)
       res.status(500).send(err.message)
     })
 })
@@ -56,11 +56,11 @@ router.get('/:userId/:seriesId/:workId', (req, res) => {
 
   User.findOne({ id: userId })
     .then(user => {
-      if (!user) return Promise.reject(userId + ' not found.')
+      if (!user) return Promise.reject(new Error(userId + ' not found.'))
       return Series.findOne({ id: seriesId, owner: user._id })
     })
     .then(series => {
-      if (!series) return Promise.reject(series + ' not found.')
+      if (!series) return Promise.reject(new Error(series + ' not found.'))
       return Work.findOne({ id: workId, series: series._id })
                 .populate(['contents', 'owner', {path: 'series', populate: {path: 'owner'}}])
     })
@@ -68,7 +68,7 @@ router.get('/:userId/:seriesId/:workId', (req, res) => {
       res.json(work)
     })
     .catch(err => {
-      console.error(err)
+      console.error(err.message)
       res.status(500).send(err.message)
     })
 })

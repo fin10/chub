@@ -3,6 +3,7 @@ import axios from 'axios'
 import Util from 'util'
 import { handleError } from '../util/handleError'
 
+import DocumentTitle from 'react-document-title'
 import { Work, ActionButton } from '../components'
 
 import './SeriesView.scss'
@@ -81,60 +82,62 @@ export default class SeriesView extends React.Component {
     const { userId, seriesId } = this.props.match.params
 
     return (series && 
-      <div>
-        <div id="series-section">
-          <h4>{series.title}</h4>
-          <p>{series.description}</p>
-          {series.tags && 
-            <div>
-              {series.tags.map(tag => <div key={tag} className="tag">#{tag}</div>)}
-            </div>
-          }
-        </div>
-        {login &&
-          <table>
-            <tbody>
-              <tr>
-                {(login.id == userId || series.folks.includes(login._id)) && 
-                  <td>
-                    <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+      <DocumentTitle title={userId + '/' + seriesId} >
+        <div>
+          <div id="series-section">
+            <h4>{series.title}</h4>
+            <p>{series.description}</p>
+            {series.tags && 
+              <div>
+                {series.tags.map(tag => <div key={tag} className="tag">#{tag}</div>)}
+              </div>
+            }
+          </div>
+          {login &&
+            <table>
+              <tbody>
+                <tr>
+                  {(login.id == userId || series.folks.includes(login._id)) && 
+                    <td>
+                      <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
+                    </td>
+                  }
+                  <td className="actions">
+                    <ActionButton
+                      id="awesomeButton"
+                      text="Awesomes" 
+                      count={series.awesomes.length} 
+                      active={series.awesomes.includes(login._id)}
+                      onClick={this._handleActionButtonClick.bind(this)} />
+                    <ActionButton 
+                      id="followButton"
+                      text="Follows" 
+                      count={series.follows.length} 
+                      active={series.follows.includes(login._id)}
+                      onClick={this._handleActionButtonClick.bind(this)} />
+                    <ActionButton 
+                      id="folkButton"
+                      text="Folks" 
+                      count={series.folks.length} 
+                      active={series.folks.includes(login._id)}
+                      onClick={this._handleActionButtonClick.bind(this)} />
                   </td>
-                }
-                <td className="actions">
-                  <ActionButton
-                    id="awesomeButton"
-                    text="Awesomes" 
-                    count={series.awesomes.length} 
-                    active={series.awesomes.includes(login._id)}
-                    onClick={this._handleActionButtonClick.bind(this)} />
-                  <ActionButton 
-                    id="followButton"
-                    text="Follows" 
-                    count={series.follows.length} 
-                    active={series.follows.includes(login._id)}
-                    onClick={this._handleActionButtonClick.bind(this)} />
-                  <ActionButton 
-                    id="folkButton"
-                    text="Folks" 
-                    count={series.folks.length} 
-                    active={series.folks.includes(login._id)}
-                    onClick={this._handleActionButtonClick.bind(this)} />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        }
-        <div className="collection">
-          {series.works.map(item => 
-            <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>
-              <Work 
-                work={item} 
-                deletable={login && login._id == item.owner._id} 
-                onWorkDelete={this._handleWorkDelete.bind(this)} />
-            </a>
-          )}
+                </tr>
+              </tbody>
+            </table>
+          }
+          <div className="collection">
+            {series.works.map(item => 
+              <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>
+                <Work 
+                  work={item} 
+                  deletable={login && login._id == item.owner._id} 
+                  onWorkDelete={this._handleWorkDelete.bind(this)} />
+              </a>
+            )}
+          </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

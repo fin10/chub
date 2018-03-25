@@ -24,6 +24,7 @@
     "passport-google-oauth": "^1.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
+    "react-document-title": "^2.0.3",
     "react-dom": "^16.2.0",
     "react-markdown": "^3.3.0",
     "react-redux": "^5.0.7",

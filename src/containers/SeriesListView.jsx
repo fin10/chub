@@ -3,6 +3,7 @@ import Util from 'util'
 import axios from "axios"
 import { handleError } from '../util/handleError'
 
+import DocumentTitle from 'react-document-title'
 import { Series } from '../components'
 
 export default class SeriesListView extends React.Component {
@@ -29,16 +30,18 @@ export default class SeriesListView extends React.Component {
     const { userId } = this.props.match.params
 
     return (
-      <div>
-        {login && login.id == userId && <a className="waves-effect waves-light btn" href="/new">New series</a>}
-        <div className="collection">
-          {series && series.map(item => 
-              <a key={item._id} className="collection-item" href={Util.format('/%s/%s', item.owner.id, item.id)}>
-                <Series series={item} />
-              </a>
-          )}
+      <DocumentTitle title={userId}>
+        <div>
+          {login && login.id == userId && <a className="waves-effect waves-light btn" href="/new">New series</a>}
+          <div className="collection">
+            {series && series.map(item => 
+                <a key={item._id} className="collection-item" href={Util.format('/%s/%s', item.owner.id, item.id)}>
+                  <Series series={item} />
+                </a>
+            )}
+          </div>
         </div>
-      </div>
+      </DocumentTitle>
     )
   }
 }

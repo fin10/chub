@@ -53,14 +53,14 @@ export default class Profile extends React.Component {
           <img src={user.photo} />
         </div>
         <div className="card-content">
-          <div className="card-title"><a className="grey-text text-darken-4" href={'/' + user.id}>{user.username}</a></div>
-          <div><a className="grey-text text-darken-4" href={'mailto:' + user.email}>{user.email}</a></div>
+          <a className="card-title grey-text text-darken-4" href={'/' + user.id}>{user.username}</a>
+          <a className="grey-text text-darken-4" href={'mailto:' + user.email}>{user.email}</a>
           <div className="grey-text text-darken-4">Followers { user.follows ? user.follows.length : 0 }</div>
         </div>
         {login && login.id != user.id && 
-        <div className="card-action">
-          <a>Follow</a> 
-        </div>
+          <div className="card-action">
+            <a>Follow</a> 
+          </div>
         }
       </div>
     )

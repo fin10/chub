@@ -14,6 +14,7 @@ export default class Work extends React.Component {
 
     return (
       <div>
+        <div className="secondary-content">{work.type}</div>
         <div className="header-contents grey-text text-darken-1">{work.owner.id}</div>
         <div className="main-contents">{work.title}</div>
         <div className="sub-contents grey-text text-darken-2">

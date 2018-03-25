@@ -72,4 +72,30 @@ router.get('/:userId/:seriesId/:workId', (req, res) => {
     })
 })
 
+router.delete('/:userId/:seriesId/:workId', (req, res) => {
+  const { userId, seriesId, workId } = req.params
+  
+  User.findOne({ id: userId })
+    .then(user => {
+      if (!user) return Promise.reject(new Error(userId + ' not found.'))
+      return Series.findOne({ id: seriesId, owner: user._id })
+    })
+    .then(series => {
+      if (!series) return Promise.reject(new Error(series + ' not found.'))
+      return Work.findOne({ id: workId, series: series._id })
+    })
+    .then(work => {
+      return Contents.deleteOne({ _id: work.contents._id })
+                    .then(() => {
+                      return work.remove().then(() => {
+                        res.json(work)
+                      })
+                    })
+    })
+    .catch(err => {
+      console.error(err.message)
+      res.status(500).send(err.message)
+    })
+})
+
 export default router

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import Util from 'util'
+import { handleError } from '../util/handleError'
 
 import { Work, ActionButton } from '../components'
 
@@ -22,8 +23,21 @@ export default class SeriesView extends React.Component {
         })
       })
       .catch(err => {
-        console.error(err.message.data)
+        handleError(err)
       })
+  }
+
+  _handleWorkDelete(work) {
+    const { userId, seriesId } = this.props.match.params    
+    axios.delete(Util.format('/api/work/%s/%s/%s', userId, seriesId, work.id))
+        .then(res => {
+          let { series } = this.state
+          series.works = series.works.filter(work => work.id != res.data.id)
+          this.setState({ series: series })
+        })
+        .catch(err => {
+          handleError(err)
+        })
   }
 
   _handleActionButtonClick(id) {
@@ -57,7 +71,7 @@ export default class SeriesView extends React.Component {
 
     if (promise) {
       promise.catch(err => {
-        console.error(err.response)
+        handleError(err)
       })
     }
   }
@@ -113,7 +127,10 @@ export default class SeriesView extends React.Component {
         <div className="collection">
           {series.works.map(item => 
             <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>
-              <Work work={item} />
+              <Work 
+                work={item} 
+                deletable={login && login._id == item.owner._id} 
+                onWorkDelete={this._handleWorkDelete.bind(this)} />
             </a>
           )}
         </div>

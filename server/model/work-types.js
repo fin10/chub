@@ -1,3 +1,3 @@
 export default [
-  'essay', 'novel', 'poetry', 'movie'
+  'essay', 'novel', 'poetry', 'cartoon', 'movie'
 ]

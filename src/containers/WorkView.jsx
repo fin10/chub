@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios"
 import Util from 'util'
+import ReactMarkdown  from 'react-markdown'
 
 import './WorkView.scss'
 
@@ -29,7 +30,9 @@ export default class WorkView extends React.Component {
       <div>
         <h5><a className="grey-text text-darken-4" href={Util.format('/%s/%s', work.series.owner.id, work.series.id)}>{work.series.title}</a></h5>
         <h1 id="work-title">{work.title}</h1>
-        <p>{work.contents.body}</p>
+        <ReactMarkdown 
+          source={work.contents.body}
+          escapeHtml={false} />
       </div>
     )
   }

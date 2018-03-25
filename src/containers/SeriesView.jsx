@@ -81,7 +81,7 @@ export default class SeriesView extends React.Component {
           <table>
             <tbody>
               <tr>
-                {login.id == userId && 
+                {(login.id == userId || series.folks.includes(login._id)) && 
                   <td>
                     <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
                   </td>
@@ -91,19 +91,19 @@ export default class SeriesView extends React.Component {
                     id="awesomeButton"
                     text="Awesomes" 
                     count={series.awesomes.length} 
-                    active={0 < series.awesomes.filter(id => id == login._id).length} 
+                    active={series.awesomes.includes(login._id)}
                     onClick={this._handleActionButtonClick.bind(this)} />
                   <ActionButton 
                     id="followButton"
                     text="Follows" 
                     count={series.follows.length} 
-                    active={0 < series.follows.filter(id => id == login._id).length} 
+                    active={series.follows.includes(login._id)}
                     onClick={this._handleActionButtonClick.bind(this)} />
                   <ActionButton 
                     id="folkButton"
                     text="Folks" 
                     count={series.folks.length} 
-                    active={0 < series.folks.filter(id => id == login._id).length} 
+                    active={series.folks.includes(login._id)}
                     onClick={this._handleActionButtonClick.bind(this)} />
                 </td>
               </tr>

@@ -10,13 +10,9 @@ router.get('/types', (req, res) => {
 })
 
 router.post('/new', (req, res) => {
-  if (!req.user) {
-    return res.status(500).send('Login needed.')
-  }
+  if (!req.user) return res.status(500).send('Login needed.')
 
-  const {
-    userId, seriesId, title, type, contents
-  } = req.body
+  const { userId, seriesId, title, type, contents } = req.body
 
   User.findOne({ id: userId })
     .then(user => {
@@ -24,6 +20,9 @@ router.post('/new', (req, res) => {
     })
     .then(series => {
       if (!series) return Promise.reject(new Error(userId + '/' + seriesId + ' not found.'))
+      if (!series.owner.equals(req.user._id) && !series.folks.some(id => id.equals(req.user._id))) {
+        return Promise.reject(new Error(req.user.id + ' doesn\'t have permission to write to ' + series.id))
+      }
 
       return new Contents({
         body: contents

@@ -18,10 +18,10 @@ router.post('/awesome', (req, res) => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
         let awesomes = series.awesomes
-        if (0 == awesomes.filter(id => id.equals(req.user._id)).length) {
-          awesomes = awesomes.concat([req.user._id])
-        } else {
+        if (awesomes.some(id => id.equals(req.user._id))) {
           awesomes = awesomes.filter(id => !id.equals(req.user._id))
+        } else {
+          awesomes = awesomes.concat([req.user._id])
         }
 
         return series.update({
@@ -50,10 +50,10 @@ router.post('/follow', (req, res) => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
         let follows = series.follows
-        if (0 == follows.filter(id => id.equals(req.user._id)).length) {
-          follows = follows.concat([req.user._id])
-        } else {
+        if (follows.some(id => id.equals(req.user._id))) {
           follows = follows.filter(id => !id.equals(req.user._id))
+        } else {
+          follows = follows.concat([req.user._id])
         }
 
         return series.update({
@@ -82,10 +82,10 @@ router.post('/folk', (req, res) => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
         let folks = series.folks
-        if (0 == folks.filter(id => id.equals(req.user._id)).length) {
-          folks = folks.concat([req.user._id])
-        } else {
+        if (folks.some(id => id.equals(req.user._id))) {
           folks = folks.filter(id => !id.equals(req.user._id))
+        } else {
+          folks = folks.concat([req.user._id])
         }
 
         return series.update({

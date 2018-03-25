@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from "axios"
 import Util from 'util'
+import { handleError } from '../util/handleError'
 import ReactMarkdown  from 'react-markdown'
 
 import './WorkView.scss'
@@ -19,7 +20,7 @@ export default class WorkView extends React.Component {
         })
       })
       .catch(err => {
-        console.error(err.message)
+        handleError(err)        
       })
   }
 

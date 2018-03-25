@@ -1,6 +1,7 @@
 import React from "react"
 import axios from "axios"
 import Util from "util"
+import { handleError } from '../util/handleError'
 
 export default class NewSeries extends React.Component {
 
@@ -21,10 +22,10 @@ export default class NewSeries extends React.Component {
       tags: $('.chips').material_chip('data').map(data => data.tag)
     }).then(res => {
       const series = res.data
-      console.log(series)
       window.location = Util.format('/%s/%s', series.owner.id, series.id)
     }).catch(err => {
-      console.error(err.response.data)
+      handleError(err)
+
       let modelMessage = $('#modal-message')
       modelMessage.empty()
       modelMessage.append(Util.format('<p>%s</p>', err.response.data))

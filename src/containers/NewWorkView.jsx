@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import Util from 'util'
+import { handleError } from '../util/handleError'
 
 export default class NewWork extends React.Component {
   
@@ -16,7 +17,7 @@ export default class NewWork extends React.Component {
         })
       })
       .catch(err => {
-        console.error(err.response)
+        handleError(err)
       })
 
     axios.get('/api/work/types')
@@ -26,7 +27,7 @@ export default class NewWork extends React.Component {
         })
       })
       .catch(err => {
-        console.error(err.response)
+        handleError(err)
       })
   }
 
@@ -47,11 +48,10 @@ export default class NewWork extends React.Component {
       type: this.refs.type.value,
       contents: this.refs.contents.value
     }).then(res => {
-      const work = res.data
-      console.log(work)
-      window.location = Util.format('/%s/%s/%s', userId, seriesId, work.id)
+      window.location = Util.format('/%s/%s/%s', userId, seriesId, res.data.id)
     }).catch(err => {
-      console.error(err.response.data)
+      handleError(err)
+
       let modelMessage = $('#modal-message')
       modelMessage.empty()
       modelMessage.append(Util.format('<p>%s</p>', err.response.data))

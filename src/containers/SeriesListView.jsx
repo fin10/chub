@@ -1,6 +1,7 @@
 import React from 'react'
 import Util from 'util'
 import axios from "axios"
+import { handleError } from '../util/handleError'
 
 import { Series } from '../components'
 
@@ -19,7 +20,7 @@ export default class SeriesListView extends React.Component {
       })
     })
     .catch(err => {
-      console.error(err.response)
+      handleError(err)
     })
   }
 

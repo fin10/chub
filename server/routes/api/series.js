@@ -17,26 +17,16 @@ router.post('/new', (req, res) => {
   const title = req.body.title
   const desc = req.body.desc
   const tags = req.body.tags ? [...new Set(req.body.tags)] : []
-  const userId = req.user._id
 
-  User.findById(userId)
-    .then(user => {
-      if (!user) return Promise.reject(new Error(req.user.id + ' not found.'))
-
-      return new Series({
-        id: keyGen(title),
-        title: title,
-        description: desc,
-        owner: user,
-        tags: tags
-      }).save()
-    })
+  new Series({
+    id: keyGen(title),
+    title: title,
+    description: desc,
+    owner: req.user._id,
+    tags: tags
+  }).save()
     .then(series => {
-      const { owner } = series
-      return owner.update({ series: owner.series.concat([series]) })
-                .then(() => {
-                  res.send(series)
-                })
+      res.send(series)
     })
     .catch(err => {
       console.error(err.message)

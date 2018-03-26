@@ -38,10 +38,7 @@ router.post('/new', (req, res) => {
           }).save()
         })
         .then(work => {
-          return series.update({ works: series.works.concat([work]) })
-                      .then(() => {
-                        res.send(work)
-                      })
+          res.send(work)
         })
     })
     .catch(err => {
@@ -85,12 +82,12 @@ router.delete('/:userId/:seriesId/:workId', (req, res) => {
       return Work.findOne({ id: workId, series: series._id })
     })
     .then(work => {
-      return Contents.deleteOne({ _id: work.contents._id })
-                    .then(() => {
-                      return work.remove().then(() => {
-                        res.json(work)
-                      })
-                    })
+      if (!req.user) return new Error('Login needed.')
+      if (!work.owner.equals(req.user._id)) return new Error('Not allowed.')
+
+      return work.remove().then(() => {
+        res.json(work)
+      })
     })
     .catch(err => {
       console.error(err.message)

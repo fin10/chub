@@ -1,0 +1,23 @@
+{
+    "user": {
+        "id": "",
+        "username": "",
+        "email": "",
+        "photo": ""
+    },
+    "series": [
+        {
+            "title": "",
+            "description": "",
+            "tags": []
+        }
+    ],
+    "works": [
+        {
+            "seriesRef": "",
+            "title": "",
+            "type": "",
+            "contents": ""
+        }
+    ]
+}

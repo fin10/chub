@@ -21,12 +21,8 @@ Series.index({ id: 1, owner: 1 }, { unique: true })
 
 Series.post('save', series => {
   return User.findById(series.owner)
-      .then(user => {
-        return user.update({ series: user.series.concat([series]) })
-      })
-      .then(() => {
-        return series.populate('owner').execPopulate()
-      })
+      .then(user => user.update({$push: { series: series }}))
+      .then(() => series.populate('owner').execPopulate())
 })
 
 export default mongoose.model('series', Series)

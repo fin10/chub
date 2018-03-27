@@ -17,16 +17,17 @@ router.post('/awesome', (req, res) => {
       .then(series => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
+        let promise = null
         let awesomes = series.awesomes
         if (awesomes.some(id => id.equals(req.user._id))) {
-          awesomes = awesomes.filter(id => !id.equals(req.user._id))
+          awesomes.pull(req.user._id)
+          promise = series.update({$pull: { awesomes: req.user._id }})
         } else {
-          awesomes = awesomes.concat([req.user._id])
+          awesomes.push(req.user._id)
+          promise = series.update({$push: { awesomes: req.user._id }})
         }
-
-        return series.update({
-          awesomes: awesomes
-        }).then(() => {
+        
+        return promise.then(() => {
           res.json(awesomes)
         })
       })
@@ -49,16 +50,17 @@ router.post('/follow', (req, res) => {
       .then(series => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
+        let promise = null
         let follows = series.follows
         if (follows.some(id => id.equals(req.user._id))) {
-          follows = follows.filter(id => !id.equals(req.user._id))
+          follows.pull(req.user._id)
+          promise = series.update({$pull: { follows: req.user._id }})
         } else {
-          follows = follows.concat([req.user._id])
+          follows.push(req.user._id)
+          promise = series.update({$push: { follows: req.user._id }})
         }
 
-        return series.update({
-          follows: follows
-        }).then(() => {
+        return promise.then(() => {
           res.json(follows)
         })
       })
@@ -81,16 +83,19 @@ router.post('/folk', (req, res) => {
       .then(series => {
         if (!series) return Promise.reject(new Error(seriesId + ' not found.'))
         
+        let promise = null
         let folks = series.folks
         if (folks.some(id => id.equals(req.user._id))) {
-          folks = folks.filter(id => !id.equals(req.user._id))
+          folks.pull(req.user._id)
+          promise = series.update({$pull: { folks: req.user._id }})
+                          .then(() => User.findByIdAndUpdate(req.user._id, {$pull: { series: series._id }}))
         } else {
-          folks = folks.concat([req.user._id])
+          folks.push(req.user._id)
+          promise = series.update({$push: { folks: req.user._id }})
+                          .then(() => User.findByIdAndUpdate(req.user._id, {$push: { series: series._id }}))
         }
 
-        return series.update({
-          folks: folks
-        }).then(() => {
+        return promise.then(() => {
           res.json(folks)
         })
       })

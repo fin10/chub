@@ -33,10 +33,12 @@ export default class WorkView extends React.Component {
       <DocumentTitle title={work.title}>
         <div>
           <h5><a className="grey-text text-darken-4" href={Util.format('/%s/%s', work.series.owner.id, work.series.id)}>{work.series.title}</a></h5>
-          <h1 id="work-title">{work.title}</h1>
-          <ReactMarkdown 
-            source={work.contents.body}
-            escapeHtml={false} />
+          <h1 className="work-title">{work.title}</h1>
+          <div className="work">
+            <ReactMarkdown 
+              source={work.contents.body}
+              escapeHtml={false} />
+          </div>
         </div>
       </DocumentTitle>
     )

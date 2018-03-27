@@ -3,7 +3,8 @@
         "browser": true,
         "es6": true,
         "node": true,
-        "jquery": true
+        "jquery": true,
+        "mocha": true
     },
     "parserOptions": {
         "ecmaFeatures": {
@@ -12,7 +13,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "mocha"
     ],
     "parser": "babel-eslint",
     "rules": {
@@ -25,6 +27,7 @@
         "valid-typeof": "warn",
         "jsx-quotes": "warn",
         "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"        
+        "react/jsx-uses-vars": "error",
+        "mocha/no-exclusive-tests": "error"   
     }
 }

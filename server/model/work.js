@@ -20,19 +20,13 @@ Work.index({ id: 1, series: 1 }, { unique: true })
 
 Work.post('save', work => {
   return Series.findById(work.series)
-              .then(series => {
-                return series.update({ works: series.works.concat([work]) })
-              })
+              .then(series => series.update({$push: { works: work }}))
 })
 
 Work.post('remove', work => {
   return Contents.findById(work.contents).remove()
-                .then(() => {
-                  return Series.findById(work.series)
-                })
-                .then(series => {
-                  return series.update({ works: series.works.filter(id => !id.equals(work._id)) })
-                })
+                .then(() => Series.findById(work.series))
+                .then(series => series.update({$pull: { works: work._id }}))
 })
 
 export default mongoose.model('work', Work)

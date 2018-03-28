@@ -7,7 +7,7 @@
             "name": "Batch Test Data",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
-                "--require",
+                "-r",
                 "babel-core/register",
                 "-u",
                 "tdd",
@@ -16,6 +16,7 @@
                 "--colors",
                 "${workspaceFolder}/batch"
             ],
+            "envFile": "${workspaceFolder}/.env",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {

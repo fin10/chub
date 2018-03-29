@@ -60,4 +60,15 @@ router.get('/:id', (req, res) => {
     })
 })
 
+router.get('/', (req, res) => {
+  const { sort, limit } = req.query
+
+  User.find().sort(sort).limit(Number.parseInt(limit))
+      .then(users => res.json(users))
+      .catch(err => {
+        console.err(err.message)
+        res.status(500).send(err.message)
+      })
+})
+
 export default router

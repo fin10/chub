@@ -11,7 +11,7 @@ describe('batch-test-data', () => {
   })
 
   it('batch-data', () => {
-    const items = ['./joanne-rowling.json']
+    const items = ['./joanne-rowling.json', './conan-doyle.json']
 
     items.forEach(item => {
       const data = require(item)

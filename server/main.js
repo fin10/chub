@@ -9,7 +9,6 @@ import Util from 'util'
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import config from '../webpack.dev.config'
 
 import authMiddleware from './middlewares/auth'
 import dbMiddleware from './middlewares/database'
@@ -19,6 +18,7 @@ import Api from './routes/api'
 
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || '3000'
+const dist = path.resolve(__dirname, '../dist')
 
 axios.defaults.baseURL = Util.format('http://%s:%s', host, port)
 
@@ -43,7 +43,9 @@ app.use('/api', Api)
 const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'production'
 if (env == 'development') {
   console.log('Server is running on development mode.')
+  const config = require('../webpack.dev.config')
   const compiler = webpack(config)
+
   app.use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath
   }))
@@ -59,6 +61,9 @@ if (env == 'development') {
       res.end()
     })
   })
+} else {
+  app.use(express.static(dist))
+  app.get('*', (req, res) => res.sendFile(path.join(dist, 'index.html')))
 }
 
 app.use((req, res, next) => {
@@ -67,7 +72,7 @@ app.use((req, res, next) => {
   next(err)
 })
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
 

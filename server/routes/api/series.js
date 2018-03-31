@@ -71,4 +71,17 @@ router.get('/:userId', (req, res) => {
     })
 })
 
+router.get('/', (req, res) => {
+  const { limit } = req.query
+
+  let promise = Series.find()
+  if (limit) promise = promise.limit(Number.parseInt(limit))
+
+  promise.then(series => res.json(series))
+        .catch(err => {
+          console.error(err)
+          res.status(500).send(err.message)
+        })
+})
+
 export default router

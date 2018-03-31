@@ -22,7 +22,7 @@ export default class Header extends React.Component {
 
   componentDidUpdate() {
     $(document).ready(() => {
-      $(".dropdown-button").dropdown()      
+      $(".dropdown-trigger").dropdown()
     })
   }
 
@@ -30,7 +30,7 @@ export default class Header extends React.Component {
     const { user } = this.state
 
     const item = user ?
-      <a className="dropdown-button" data-activates="dropdown">{user.username}</a> :
+      <a className="dropdown-trigger" data-target="dropdown">{user.username}</a> :
       <a href="/login">Login</a>
 
     return (

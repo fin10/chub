@@ -63,8 +63,11 @@ router.get('/:id', (req, res) => {
 router.get('/', (req, res) => {
   const { sort, limit } = req.query
 
-  User.find().sort(sort).limit(Number.parseInt(limit))
-      .then(users => res.json(users))
+  let promise = User.find()
+  if (sort) promise = promise.sort(sort)
+  if (limit) promise = promise.limit(Number.parseInt(limit))
+
+  promise.then(users => res.json(users))
       .catch(err => {
         console.err(err.message)
         res.status(500).send(err.message)

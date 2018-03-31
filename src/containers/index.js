@@ -6,5 +6,6 @@ import SeriesView from './SeriesView'
 import WorkView from './WorkView'
 import NewSeriesView from './NewSeriesView'
 import NewWorkView from './NewWorkView'
+import DiscoveryView from './DiscoveryView'
 
-export { DashboardView, LoginView, ClientApp, SeriesListView, SeriesView, WorkView, NewSeriesView, NewWorkView }
+export { DiscoveryView, DashboardView, LoginView, ClientApp, SeriesListView, SeriesView, WorkView, NewSeriesView, NewWorkView }

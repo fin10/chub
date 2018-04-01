@@ -1,19 +1,24 @@
 {
-    "user": {
-        "id": "",
-        "username": "",
-        "email": "",
-        "photo": ""
-    },
+    "users": [
+        {
+            "id": "",
+            "username": "",
+            "email": "",
+            "photo": ""
+        }
+    ],
     "series": [
         {
+            "ownerRef": "",
             "title": "",
             "description": "",
-            "tags": []
+            "tags": [],
+            "folks": []
         }
     ],
     "works": [
         {
+            "ownerRef": "",
             "seriesRef": "",
             "title": "",
             "type": "",

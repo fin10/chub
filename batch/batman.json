@@ -1,0 +1,54 @@
+{
+    "users": [
+        {
+            "id": "bob.kane",
+            "username": "Bob Kane",
+            "email": "bob.kane@abc.com",
+            "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Bob_Kane_1966_photo.jpg/250px-Bob_Kane_1966_photo.jpg"
+        },
+        {
+            "id": "ed.hannigan",
+            "username": "Ed Hannigan",
+            "email": "ed.hannigan@abc.com",
+            "photo": "https://vignette.wikia.nocookie.net/marveldatabase/images/5/5a/Ed_Hannigan.jpg/revision/latest?cb=20130621213602"
+        },
+        {
+            "id": "jason.fabok",
+            "username": "Jason Fabok",
+            "email": "jason.fabok@abc.com",
+            "photo": "https://i.ytimg.com/vi/5tNLcPxcZ1g/maxresdefault.jpg"
+        }
+    ],
+    "series": [
+        {
+            "ownerRef": "bob.kane",
+            "title": "Batman",
+            "description": "",
+            "tags": ["Superhero"],
+            "folks": ["ed.hannigan", "jason.fabok"]
+        }
+    ],
+    "works": [
+        {
+            "ownerRef": "bob.kane",
+            "seriesRef": "Batman",
+            "title": "Batman #1",
+            "type": "cartoon",
+            "contents": "![](https://upload.wikimedia.org/wikipedia/en/thumb/4/4d/BatmanComicIssue1%2C1940.png/250px-BatmanComicIssue1%2C1940.png)"
+        },
+        {
+            "ownerRef": "ed.hannigan",
+            "seriesRef": "Batman",
+            "title": "Batman: Legends of the Dark Knight",
+            "type": "cartoon",
+            "contents": "![](https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Legends_of_the_Dark_Knight_2.jpg/250px-Legends_of_the_Dark_Knight_2.jpg)"
+        },
+        {
+            "ownerRef": "jason.fabok",
+            "seriesRef": "Batman",
+            "title": "Batman Eternal",
+            "type": "cartoon",
+            "contents": "![](https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Batman_Eternal.jpg/250px-Batman_Eternal.jpg)"
+        }
+    ]
+}

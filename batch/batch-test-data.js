@@ -3,49 +3,49 @@ import keyGen from '../server/util/key-generator'
 import { User, Series, Work, Contents } from '../server/model'
 import '../server/main'
 
+const createUser = (user) => {
+  return User.create({
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    photo: user.photo
+  })
+}
+
+const createSeries = (user, series, folks) => {
+  return Series.create({
+    id: keyGen(series.title),
+    title: series.title,
+    description: series.description,
+    tags: series.tags,
+    owner: user,
+    folks: folks
+  }).then(series => Promise.all(folks.map(user => user.update({$push: {series: series}}))))
+}
+
+const createWork = (user, series, work, contents) => {
+  return Work.create({
+    id: keyGen(work.title),
+    title: work.title,
+    type: work.type,
+    contents: contents,
+    series: series,
+    owner: user
+  })
+}
+
+const createContents = (work) => Contents.create({ body: work.contents })
+
 describe('batch-test-data', () => {
-  it('delete-all', () => {
-    return User.remove()
+  it('delete-all', async () => {
+    await User.remove()
               .then(() => Series.remove())
               .then(() => Work.remove())
               .then(() => Contents.remove())
   })
 
   it('batch-data', () => {
-    const items = ['./harry-potter.json', './sherlock-holmes.json']
-
-    const createUser = (user) => {
-      return User.create({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        photo: user.photo
-      })
-    }
-
-    const createSeries = (user, series, folks) => {
-      return Series.create({
-        id: keyGen(series.title),
-        title: series.title,
-        description: series.description,
-        tags: series.tags,
-        owner: user,
-        folks: folks
-      }).then(series => Promise.all(folks.map(user => user.update({$push: {series: series}}))))
-    }
-
-    const createWork = (user, series, work, contents) => {
-      return Work.create({
-        id: keyGen(work.title),
-        title: work.title,
-        type: work.type,
-        contents: contents,
-        series: series,
-        owner: user
-      })
-    }
-
-    const createContents = (work) => Contents.create({ body: work.contents })
+    const items = ['./harry-potter.json', './sherlock-holmes.json', './batman.json']
 
     items.forEach(item => {
       const data = require(item)

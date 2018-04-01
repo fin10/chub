@@ -3,6 +3,7 @@ import Graph from 'react-graph-vis'
 import axios from 'axios'
 import handleError from '../util/handleError'
 import randomColor from 'randomcolor'
+import Util from 'util'
 
 export default class Discovery extends React.Component {
 
@@ -31,10 +32,22 @@ export default class Discovery extends React.Component {
     }
 
     this.events = {
-      select: this._handleNodeSelect
+      selectNode: this._handleNodeSelect
     }
 
     this._makeGraph()
+  }
+
+  _handleNodeSelect(e) {
+    console.debug(e)
+    const { event, nodes } = e
+    if (event.type == 'tap' && nodes.length > 0) {
+      console.debug(nodes[0])
+      const node = this.body.data.nodes.get(nodes[0])
+      if (node) {
+        window.location.href = node.link
+      }
+    }
   }
 
   _makeGraph() {
@@ -56,6 +69,7 @@ export default class Discovery extends React.Component {
               graph.nodes.push({
                 id: user._id,
                 label: user.id,
+                link: '/' + user.id,
                 shape: 'circularImage',
                 image: user.photo,
                 size: 20,
@@ -67,15 +81,19 @@ export default class Discovery extends React.Component {
               graph.nodes.push({
                 id: series._id,
                 label: series.title,
+                link: Util.format('/%s/%s', series.owner.id, series.id),
                 size: 20,
-                color: colors[series.owner]
+                color: colors[series.owner._id]
               })
             })
 
             works.forEach(work => {
+              const { series } = work
+
               graph.nodes.push({
                 id: work._id,
                 label: work.title,
+                link: Util.format('/%s/%s/%s', series.owner.id, series.id, work.id),
                 size: 10,
                 color: colors[work.owner]
               })
@@ -104,10 +122,6 @@ export default class Discovery extends React.Component {
           .catch(err => {
             handleError(err)
           })
-  }
-
-  _handleNodeSelect(event) {
-    console.log(event)
   }
 
   render() {

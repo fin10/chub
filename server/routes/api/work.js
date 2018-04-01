@@ -98,7 +98,7 @@ router.delete('/:userId/:seriesId/:workId', (req, res) => {
 router.get('/', (req, res) => {
   const { limit } = req.query
 
-  let promise = Work.find()
+  let promise = Work.find().populate({path: 'series', populate: {path: 'owner'}})
   if (limit) promise = promise.limit(Number.parseInt(limit))
 
   promise.then(work => res.json(work))

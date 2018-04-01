@@ -74,7 +74,7 @@ router.get('/:userId', (req, res) => {
 router.get('/', (req, res) => {
   const { limit } = req.query
 
-  let promise = Series.find()
+  let promise = Series.find().populate('owner')
   if (limit) promise = promise.limit(Number.parseInt(limit))
 
   promise.then(series => res.json(series))

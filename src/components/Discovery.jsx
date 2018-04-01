@@ -111,7 +111,7 @@ export default class Discovery extends React.Component {
             series.forEach(series => {
               series.works.forEach(work => {
                 graph.edges.push({
-                  from: series._id, to: work,
+                  from: work, to: series._id,
                   arrows: { to: { enabled: false } }
                 })
               })

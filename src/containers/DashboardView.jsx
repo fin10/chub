@@ -6,7 +6,7 @@ export default class DashboardView extends React.Component {
     return (
       <div>
         <h4>Dashboard</h4>
-        <p><i class="material-icons" style={{ verticalAlign: 'text-bottom' }}>report_problem</i> In progress of construction!</p>
+        <p><i className="material-icons" style={{ verticalAlign: 'text-bottom' }}>report_problem</i> In progress of construction!</p>
       </div>
     )
   }

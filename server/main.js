@@ -18,7 +18,6 @@ import Api from './routes/api'
 
 const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || '3000'
-const dist = path.resolve(__dirname, '../dist')
 
 axios.defaults.baseURL = Util.format('http://%s:%s', host, port)
 
@@ -40,7 +39,7 @@ dbMiddleware()
 app.use('/static', express.static(path.join(__dirname, '../public')))
 app.use('/api', Api)
 
-const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'production'
+const env = process.env.NODE_ENV
 if (env == 'development') {
   console.log('Server is running on development mode.')
   const config = require('../webpack.dev.config')
@@ -62,6 +61,7 @@ if (env == 'development') {
     })
   })
 } else {
+  const dist = path.resolve(__dirname, '../dist')
   app.use(express.static(dist))
   app.get('*', (req, res) => res.sendFile(path.join(dist, 'index.html')))
 }

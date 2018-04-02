@@ -13,7 +13,7 @@ export default class LoginView extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('/api/user?sort=follows&limit=3')
+    axios.get('/api/user?sort=-follows&limit=5')
         .then(res => {
           this.setState({
             users: res.data

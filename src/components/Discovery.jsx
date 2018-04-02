@@ -39,14 +39,10 @@ export default class Discovery extends React.Component {
   }
 
   _handleNodeSelect(e) {
-    console.debug(e)
-    const { event, nodes } = e
-    if (event.type == 'tap' && nodes.length > 0) {
-      console.debug(nodes[0])
+    const { nodes } = e
+    if (nodes.length > 0) {
       const node = this.body.data.nodes.get(nodes[0])
-      if (node) {
-        window.location.href = node.link
-      }
+      if (node) window.location.href = node.link
     }
   }
 

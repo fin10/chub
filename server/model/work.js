@@ -20,7 +20,7 @@ Work.index({ id: 1, series: 1 }, { unique: true })
 
 Work.post('save', work => {
   return Series.findById(work.series)
-              .then(series => series.update({$push: { works: work }}))
+              .then(series => series.update({$addToSet: { works: work }}))
 })
 
 Work.post('remove', work => {

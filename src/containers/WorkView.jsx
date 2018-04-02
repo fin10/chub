@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from "axios"
 import Util from 'util'
 import { handleError } from '../util/handleError'
@@ -9,6 +10,10 @@ import ReactMarkdown  from 'react-markdown'
 import './WorkView.scss'
 
 export default class WorkView extends React.Component {
+
+  static propTypes = {
+    match: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)

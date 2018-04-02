@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Util from 'util'
 import axios from "axios"
 import { handleError } from '../util/handleError'
@@ -8,6 +9,10 @@ import { Series } from '../components'
 
 export default class SeriesListView extends React.Component {
 
+  static propTypes = {
+    match: PropTypes.object.isRequired
+  }
+  
   constructor(props) {
     super(props)
     this.state = { series: null }

@@ -20,7 +20,7 @@ export default class ActionButton extends React.Component {
     active: false
   }
 
-  _handleTextClick(e) {
+  _handleTextClick() {
     const { id, onClick } = this.props
     if (onClick) {
       onClick(id)

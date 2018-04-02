@@ -21,7 +21,7 @@ Series.index({ id: 1, owner: 1 }, { unique: true })
 
 Series.post('save', series => {
   return User.findById(series.owner)
-      .then(user => user.update({$push: { series: series }}))
+      .then(user => user.update({$addToSet: { series: series }}))
       .then(() => series.populate('owner').execPopulate())
 })
 

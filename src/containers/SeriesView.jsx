@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import Util from 'util'
 import { handleError } from '../util/handleError'
@@ -10,6 +11,10 @@ import './SeriesView.scss'
 import '../components/Tag.scss'
 
 export default class SeriesView extends React.Component {
+
+  static propTypes = {
+    match: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)

@@ -1,8 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import Util from 'util'
 
 export default class Profile extends React.Component {
+
+  static propTypes = {
+    location: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)

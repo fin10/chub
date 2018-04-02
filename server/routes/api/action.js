@@ -24,7 +24,7 @@ router.post('/awesome', (req, res) => {
           promise = series.update({$pull: { awesomes: req.user._id }})
         } else {
           awesomes.push(req.user._id)
-          promise = series.update({$push: { awesomes: req.user._id }})
+          promise = series.update({$addToSet: { awesomes: req.user._id }})
         }
         
         return promise.then(() => {
@@ -57,7 +57,7 @@ router.post('/follow', (req, res) => {
           promise = series.update({$pull: { follows: req.user._id }})
         } else {
           follows.push(req.user._id)
-          promise = series.update({$push: { follows: req.user._id }})
+          promise = series.update({$addToSet: { follows: req.user._id }})
         }
 
         return promise.then(() => {
@@ -91,8 +91,8 @@ router.post('/folk', (req, res) => {
                           .then(() => User.findByIdAndUpdate(req.user._id, {$pull: { series: series._id }}))
         } else {
           folks.push(req.user._id)
-          promise = series.update({$push: { folks: req.user._id }})
-                          .then(() => User.findByIdAndUpdate(req.user._id, {$push: { series: series._id }}))
+          promise = series.update({$addToSet: { folks: req.user._id }})
+                          .then(() => User.findByIdAndUpdate(req.user._id, {$addToSet: { series: series._id }}))
         }
 
         return promise.then(() => {

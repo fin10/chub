@@ -1,14 +1,25 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import Util from 'util'
 import { handleError } from '../util/handleError'
 
 export default class NewWork extends React.Component {
   
+  static propTypes = {
+    match: PropTypes.object.isRequired
+  }
+  
   constructor(props) {
     super(props)
     this.state = { series: null, types: [] }
     const { userId, seriesId } = this.props.match.params
+
+    this.ref = {
+      title: React.createRef(),
+      type: React.createRef(),
+      contents: React.createRef()
+    }
 
     axios.get(Util.format('/api/series/%s/%s', userId, seriesId))
       .then(res => {
@@ -33,7 +44,7 @@ export default class NewWork extends React.Component {
 
   componentDidUpdate() {
     $(document).ready(() => {
-      $('select').material_select()
+      $('select').formSelect()
       $('#error-modal').modal()
     })
   }
@@ -44,9 +55,9 @@ export default class NewWork extends React.Component {
     axios.post('/api/work/new', {
       userId: userId,
       seriesId: seriesId,
-      title: this.refs.title.value,
-      type: this.refs.type.value,
-      contents: this.refs.contents.value
+      title: this.ref.title.current.value,
+      type: this.ref.type.current.value,
+      contents: this.ref.contents.current.value
     }).then(res => {
       window.location = Util.format('/%s/%s/%s', userId, seriesId, res.data.id)
     }).catch(err => {
@@ -73,17 +84,17 @@ export default class NewWork extends React.Component {
           <h4>New Work</h4>
         </div>
         <div className="input-field col s12">
-          <input className="validate" type="text" id="new-work-title" data-length="40" ref="title" />
+          <input className="validate" type="text" id="new-work-title" data-length="40" ref={this.ref.title} />
           <label htmlFor="new-work-title">Title</label>
         </div>
         <div className="input-field col s12">
-          <select ref="type">
+          <select ref={this.ref.type}>
             {types.map((type, idx) => <option key={idx} value={type}>{type}</option>)}
           </select>
           <label>Type</label>
         </div>
         <div className="input-field col s12">
-          <textarea className="materialize-textarea" id="new-work-contents" ref="contents" />
+          <textarea className="materialize-textarea" id="new-work-contents" ref={this.ref.contents} />
           <label htmlFor="new-work-contents">Contents</label>
         </div>
         <div className="input-field col s12">

@@ -17,17 +17,14 @@
         "mocha"
     ],
     "parser": "babel-eslint",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],    
     "rules": {
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
-        "no-unreachable": "warn",
+        "no-console": "off",
         "no-unused-vars": "warn",
-        "constructor-super": "warn",
-        "valid-typeof": "warn",
         "jsx-quotes": "warn",
-        "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error",
         "mocha/no-exclusive-tests": "error"   
     }
 }

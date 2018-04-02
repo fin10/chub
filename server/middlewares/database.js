@@ -19,6 +19,6 @@ export default () => {
   })
   
   const url = process.env.MONGO_DB_URL
-  console.log('MongoDB: ', url)
+  console.debug('MongoDB: ', url)
   mongoose.connect(url)
 }

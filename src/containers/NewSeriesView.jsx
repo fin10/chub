@@ -5,21 +5,33 @@ import { handleError } from '../util/handleError'
 
 export default class NewSeries extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.ref = {
+      title: React.createRef(),
+      desc: React.createRef(),
+      tags: React.createRef()
+    }
+  }
+
   componentDidMount() {
     $(document).ready(() => {
-      $('.chips').material_chip({
+      $('.chips-placeholder').chips({
         placeholder: 'Enter a tag',
         secondaryPlaceholder: '+Tag',
       })
+      
       $('#error-modal').modal()
     })
   }
 
   _handleSaveButton() {
+    const chips = window.M.Chips.getInstance(this.ref.tags.current)
+    
     axios.post('/api/series/new', {
-      title: this.refs.title.value,
-      desc: this.refs.desc.value,
-      tags: $('.chips').material_chip('data').map(data => data.tag)
+      title: this.ref.title.current.value,
+      desc: this.ref.desc.current.value,
+      tags: chips.chipsData.map(data => data.tag)
     }).then(res => {
       const series = res.data
       window.location = Util.format('/%s/%s', series.owner.id, series.id)
@@ -45,15 +57,15 @@ export default class NewSeries extends React.Component {
             <h4>New Series</h4>
           </div>
           <div className="input-field col s12">
-            <input id="new-series-title" className="validate" type="text" data-length="40" ref="title" />
+            <input id="new-series-title" className="validate" type="text" data-length="40" ref={this.ref.title} />
             <label htmlFor="new-series-title">Title</label>
           </div>
           <div className="input-field col s12">
-            <textarea id="new-series-desc" className="materialize-textarea" data-length="200" ref="desc"></textarea>
+            <textarea id="new-series-desc" className="materialize-textarea" data-length="200" ref={this.ref.desc}></textarea>
             <label htmlFor="new-series-desc">Description</label>
           </div>
           <div className="input-field col s12">
-            <div id="new-series-tags" className="chips" ref="tags"></div>
+            <div id="new-series-tags" className="chips chips-placeholder" ref={this.ref.tags}></div>
           </div>
           <div className="col s12">
             <a className="right waves-effect waves-light btn" onClick={this._handleSaveButton.bind(this)}>Save</a>

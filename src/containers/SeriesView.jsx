@@ -98,39 +98,37 @@ export default class SeriesView extends React.Component {
               </div>
             }
           </div>
-          {login &&
-            <table>
-              <tbody>
-                <tr>
-                  {(login.id == userId || series.folks.includes(login._id)) && 
-                    <td>
-                      <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
-                    </td>
-                  }
-                  <td className="actions">
-                    <ActionButton
-                      id="awesomeButton"
-                      text="Awesomes" 
-                      count={series.awesomes.length} 
-                      active={series.awesomes.includes(login._id)}
-                      onClick={this._handleActionButtonClick.bind(this)} />
-                    <ActionButton 
-                      id="followButton"
-                      text="Follows" 
-                      count={series.follows.length} 
-                      active={series.follows.includes(login._id)}
-                      onClick={this._handleActionButtonClick.bind(this)} />
-                    <ActionButton 
-                      id="folkButton"
-                      text="Folks" 
-                      count={series.folks.length} 
-                      active={series.folks.includes(login._id)}
-                      onClick={this._handleActionButtonClick.bind(this)} />
+          <table>
+            <tbody>
+              <tr>
+                {login && (login.id == userId || series.folks.includes(login._id)) && 
+                  <td>
+                    <a className="waves-effect waves-light btn" href={Util.format('/%s/%s/new', userId, seriesId)}>New work</a>
                   </td>
-                </tr>
-              </tbody>
-            </table>
-          }
+                }
+                <td className="actions">
+                  <ActionButton
+                    id="awesomeButton"
+                    text="Awesomes" 
+                    count={series.awesomes.length} 
+                    active={login && series.awesomes.includes(login._id)}
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                  <ActionButton 
+                    id="followButton"
+                    text="Follows" 
+                    count={series.follows.length} 
+                    active={login && series.follows.includes(login._id)}
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                  <ActionButton 
+                    id="folkButton"
+                    text="Folks" 
+                    count={series.folks.length} 
+                    active={login && series.folks.includes(login._id)}
+                    onClick={this._handleActionButtonClick.bind(this)} />
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <div className="collection">
             {series.works.map(item => 
               <a key={item._id} className="collection-item" href={Util.format('/%s/%s/%s', userId, seriesId, item.id)}>

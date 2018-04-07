@@ -64,7 +64,7 @@ export default class Discovery extends React.Component {
 
               graph.nodes.push({
                 id: user._id,
-                label: user.id,
+                label: user.username,
                 link: '/' + user.id,
                 shape: 'circularImage',
                 image: user.photo,

@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/awesome', (req, res) => {
   if (!req.user) return res.status(401).send('Login needed.')
 
-  const { userId, seriesId } = req.query
+  const { userId, seriesId } = req.body
 
   User.findOne({ id: userId })
       .then(user => {
@@ -77,7 +77,7 @@ router.post('/follow', (req, res) => {
 router.post('/folk', (req, res) => {
   if (!req.user) return res.status(401).send('Login needed.')
 
-  const { userId, seriesId } = req.query
+  const { userId, seriesId } = req.body
 
   User.findOne({ id: userId })
       .then(user => {

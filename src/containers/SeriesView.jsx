@@ -53,26 +53,26 @@ export default class SeriesView extends React.Component {
     let promise = null
     switch (id) {
       case 'awesomeButton':
-        promise = axios.post(Util.format('/api/action/awesome?userId=%s&seriesId=%s', userId, seriesId))
-                      .then(res => {
-                        series.awesomes = res.data
-                        this.setState({ series: series })
-                      })
-        break;
+        promise = axios.post('/api/action/awesome', { userId: userId, seriesId: seriesId})
+          .then(res => {
+            series.awesomes = res.data
+            this.setState({ series: series })
+          })
+        break
       case 'followButton':
         promise = axios.post('/api/action/follow', {userId: userId, seriesId: seriesId})
-                      .then(res => {
-                        series.follows = res.data
-                        this.setState({ series: series })
-                      })
-        break;
+          .then(res => {
+            series.follows = res.data
+            this.setState({ series: series })
+          })
+        break
       case 'folkButton':
-        promise = axios.post(Util.format('/api/action/folk?userId=%s&seriesId=%s', userId, seriesId))
-                      .then(res => {
-                        series.folks = res.data
-                        this.setState({ series: series })
-                      })
-        break;
+        promise = axios.post('/api/action/folk', { userId: userId, seriesId: seriesId})
+          .then(res => {
+            series.folks = res.data
+            this.setState({ series: series })
+          })
+        break
     }
 
     if (promise) {

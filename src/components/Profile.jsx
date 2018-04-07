@@ -49,8 +49,23 @@ export default class Profile extends React.Component {
     })
   }
 
+  _handleFollow() {
+    const { user } = this.state
+    axios.post('/api/action/follow', { userId: user.id })
+        .then(res => {
+          user.follows = res.data
+          this.setState({ user: user })
+        })    
+  }
+
   render() {
     const { login, user } = this.state
+
+    let followAction = null
+    if (login && login.id !== user.id) {
+      const text = user.follows.includes(login._id) ? "Unfollow" : "Follow"
+      followAction = <a style={{ cursor: 'pointer' }} onClick={this._handleFollow.bind(this)}>{text}</a>
+    }
 
     return (user &&
       <div className="card">
@@ -62,10 +77,10 @@ export default class Profile extends React.Component {
           <a className="grey-text text-darken-4" href={'mailto:' + user.email}>{user.email}</a>
           <div className="grey-text text-darken-4">Followers { user.follows ? user.follows.length : 0 }</div>
         </div>
-        {login && login.id != user.id && 
-          <div className="card-action">
-            <a>Follow</a> 
-          </div>
+        {followAction && 
+        <div className="card-action">
+          {followAction}
+        </div>
         }
       </div>
     )

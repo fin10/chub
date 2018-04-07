@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
+    "build": "webpack",
     "start": "node -r babel-register ./server/main.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec node -r babel-register ./server/main.js --watch ./server"
   },
@@ -47,7 +47,7 @@
     "eslint-plugin-mocha": "^5.0.0",
     "eslint-plugin-react": "^7.7.0",
     "file-loader": "^1.1.11",
-    "html-webpack-plugin": "^3.1.0",
+    "html-webpack-plugin": "^3.2.0",
     "mocha": "^5.0.5",
     "node-sass": "^4.8.3",
     "nodemon": "^1.17.3",

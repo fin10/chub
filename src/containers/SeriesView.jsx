@@ -60,7 +60,7 @@ export default class SeriesView extends React.Component {
                       })
         break;
       case 'followButton':
-        promise = axios.post(Util.format('/api/action/follow?userId=%s&seriesId=%s', userId, seriesId))
+        promise = axios.post('/api/action/follow', {userId: userId, seriesId: seriesId})
                       .then(res => {
                         series.follows = res.data
                         this.setState({ series: series })
